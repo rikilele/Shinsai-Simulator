@@ -20,7 +20,7 @@ class Player(ShowBase):
         (self.posX, self.posY, self.posZ) = (0, -800, 500) # initial position
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
         self.gravity = 1
-        self.speed = 3 # depends on gender and age
+        self.speed = 1 # depends on gender and age
         self.keyPressed(scene) # initiates function that runs on key press
         self.timerFired(scene) # initiates function that runs on timer
         self.mouseActivity(scene) # initiates function that runs on mouse
@@ -41,10 +41,10 @@ class Player(ShowBase):
     # applies gravity to player, also camera
     def fall(self, task):
         g = self.gravity
-        if (self.posZ > 0):
-            self.posZ -= g
+        if (self.posZ > 0 or self.gravity < 0):
+            self.posZ -= min (g, self.posZ) # to not go underground
             self.gravity += 1.0
-        if (self.posZ == 0):
+        elif (self.posZ == 0):
             self.gravity = 1 # the value of the gravitational constant
         return Task.cont
 
@@ -52,22 +52,28 @@ class Player(ShowBase):
     # Helpers for keyPressed
     ################################################################
 
-    def move(self, scene, direction):
+    def move(self, scene):
         if scene.paused == False:
+            isDown = base.mouseWatcherNode.is_button_down
             magnitude = self.speed*self.health # speed depends on health
-            angleRadians = self.H * (pi/180)
-            if direction == "front":
-                self.posX += magnitude*-sin(angleRadians)
-                self.posY += magnitude*cos(angleRadians)
-            elif direction == "back":
-                self.posX += magnitude*sin(angleRadians)
-                self.posY += magnitude*-cos(angleRadians)
-            elif direction == "left":
-                self.posX += magnitude*-cos(angleRadians)
-                self.posY += magnitude*-sin(angleRadians)
-            elif direction == "right":
-                self.posX += magnitude*cos(angleRadians)
-                self.posY += magnitude*sin(angleRadians)
+            radians = self.H * (pi/180)
+            if isDown("w"): # forwards
+                self.posX += magnitude*-sin(radians)
+                self.posY += magnitude*cos(radians)
+            elif isDown("s"): # backwards
+                self.posX += magnitude*sin(radians)
+                self.posY += magnitude*-cos(radians)
+            elif isDown("a"): # left
+                self.posX += magnitude*-cos(radians)*0.8 # side-step is slower
+                self.posY += magnitude*-sin(radians)*0.8
+            elif isDown("d"): # right
+                self.posX += magnitude*cos(radians)*0.8
+                self.posY += magnitude*sin(radians)*0.8
+        return Task.cont
+
+    def jump(self):
+        if self.posZ == 0:
+            self.gravity = -10
 
     ################################################################
     # Helpers for mouseActivity
@@ -79,9 +85,11 @@ class Player(ShowBase):
         if (scene.paused == False) and (scene.mouseWatcherNode.hasMouse()):
             self.mouseX = scene.mouseWatcherNode.getMouseX()
             self.mouseY = scene.mouseWatcherNode.getMouseY()
-            self.H = -(self.mouseX*10)
-            if abs(self.mouseY*10 < 90): # vision is limited in z-axis
-                self.P = self.mouseY*10
+            modifier = 10 # convert x-unit to angle
+            self.H = -(self.mouseX*10) # change H vision
+            potentialP = self.mouseY*10
+            if abs(potentialP < 90): # vision is limited in z-axis
+                self.P = potentialP
         return Task.cont
 
     ################################################################
@@ -90,14 +98,8 @@ class Player(ShowBase):
 
     # responds to key press
     def keyPressed(self, scene):
-        scene.accept("w", self.move, [scene, "front"])
-        scene.accept("w-repeat", self.move, [scene, "front"])
-        scene.accept("s", self.move, [scene, "back"])
-        scene.accept("s-repeat", self.move, [scene, "back"])
-        scene.accept("a", self.move, [scene, "left"])
-        scene.accept("a-repeat", self.move, [scene, "left"])
-        scene.accept("d", self.move, [scene, "right"])
-        scene.accept("d-repeat", self.move, [scene, "right"])
+        taskMgr.add(self.move, "move with AWSD", extraArgs=[scene])
+        scene.accept("space", self.jump)
     
     # adds task that should be fired every second
     def timerFired(self, scene):
@@ -112,7 +114,7 @@ class Terrain(ShowBase):
     def __init__(self, scene):
         self.terrain = scene.loader.loadModel("models/fuji.egg")
         self.terrain.reparentTo(scene.render)
-        self.terrain.setScale(0.4)
+        self.terrain.setScale(1)
         self.terrain.setHpr(0,0,0)
         self.terrain.setPos(0, 0, 0)
 
@@ -120,7 +122,7 @@ class Terrain(ShowBase):
         # Reparent the model to render.
         self.bamboo.reparentTo(scene.render)
         # Apply scale and position transforms on the model.
-        self.bamboo.setScale(1)
+        self.bamboo.setScale(2)
         self.bamboo.setPos(0, 0, -40)
 
 class Building(ShowBase):
