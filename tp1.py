@@ -20,7 +20,7 @@ class Player(ShowBase):
         (self.posX, self.posY, self.posZ) = (0, -800, 500) # initial position
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
         self.gravity = 1
-        self.speed = 1 # depends on gender and age
+        self.speed = 10 # depends on gender and age
         self.keyPressed(scene) # initiates function that runs on key press
         self.timerFired(scene) # initiates function that runs on timer
         self.mouseActivity(scene) # initiates function that runs on mouse
@@ -72,13 +72,15 @@ class Player(ShowBase):
         return Task.cont
 
     def jump(self):
-        if self.posZ == 0:
-            self.gravity = -10
+        # if self.posZ == 0:
+        #     self.gravity = -10
+        self.gravity = -10
 
     ################################################################
     # Helpers for mouseActivity
     ################################################################
 
+    """Want to set maximum mouse (x, y)"""
     def lookAround(self, scene):
         # template taken from:
         # http://www.panda3d.org/manual/index.php/Mouse_Support
@@ -86,9 +88,9 @@ class Player(ShowBase):
             self.mouseX = scene.mouseWatcherNode.getMouseX()
             self.mouseY = scene.mouseWatcherNode.getMouseY()
             modifier = 10 # convert x-unit to angle
-            self.H = -(self.mouseX*10) # change H vision
-            potentialP = self.mouseY*10
-            if abs(potentialP < 90): # vision is limited in z-axis
+            self.H = -(self.mouseX*modifier) # change H vision
+            potentialP = self.mouseY*modifier
+            if abs(potentialP) < 80: # vision is limited in z-axis
                 self.P = potentialP
         return Task.cont
 
@@ -112,11 +114,12 @@ class Player(ShowBase):
 # used only to load city terrain specified by user
 class Terrain(ShowBase):
     def __init__(self, scene):
-        self.terrain = scene.loader.loadModel("models/fuji.egg")
+        self.terrain = scene.loader.loadModel("models/terrains/fuji/fuji.egg")
         self.terrain.reparentTo(scene.render)
         self.terrain.setScale(1)
         self.terrain.setHpr(0,0,0)
-        self.terrain.setPos(0, 0, 0)
+        self.terrain.setPos(0, 0, -100)
+        print ("loaded Fuji")
 
         self.bamboo = scene.loader.loadModel("environment")
         # Reparent the model to render.
