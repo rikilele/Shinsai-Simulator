@@ -128,8 +128,16 @@ class Terrain(ShowBase):
         self.bamboo.setScale(2)
         self.bamboo.setPos(0, 0, -40)
 
+
 class Building(ShowBase):
-    pass
+
+    for i in range(4):
+        self.building = scene.loader.loadModel("models/r-building/r-building.egg")
+        self.building.reparentTo(scene.render)
+        self.building.setHpr(90*i,0,0)
+        self.building.setScale(100)
+        self.building.setPos(i*200, 0, 0)
+
 class Water(ShowBase):
     pass
 class Glass(ShowBase):
