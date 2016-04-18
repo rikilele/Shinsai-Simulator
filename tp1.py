@@ -20,7 +20,7 @@ class Player(ShowBase):
         (self.posX, self.posY, self.posZ) = (0, -800, 500) # initial position
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
         self.gravity = 1
-        self.speed = 10 # depends on gender and age
+        self.speed = 3 # depends on gender and age
         self.keyPressed(scene) # initiates function that runs on key press
         self.timerFired(scene) # initiates function that runs on timer
         self.mouseActivity(scene) # initiates function that runs on mouse
@@ -114,12 +114,6 @@ class Player(ShowBase):
 # used only to load city terrain specified by user
 class Terrain(ShowBase):
     def __init__(self, scene):
-        self.terrain = scene.loader.loadModel("models/terrains/fuji/fuji.egg")
-        self.terrain.reparentTo(scene.render)
-        self.terrain.setScale(1)
-        self.terrain.setHpr(0,0,0)
-        self.terrain.setPos(0, 0, -100)
-        print ("loaded Fuji")
 
         self.bamboo = scene.loader.loadModel("environment")
         # Reparent the model to render.
@@ -130,13 +124,29 @@ class Terrain(ShowBase):
 
 
 class Building(ShowBase):
+    def __init__(self, scene, name):
+        if name == "concrete":
+            self.buildConcrete(scene)
+        if name == "R":
+            self.buildRBuilding(scene)
 
-    for i in range(4):
-        self.building = scene.loader.loadModel("models/r-building/r-building.egg")
-        self.building.reparentTo(scene.render)
-        self.building.setHpr(90*i,0,0)
-        self.building.setScale(100)
-        self.building.setPos(i*200, 0, 0)
+    def buildConcrete(self, scene):
+        for i in range(4):
+            scene.building = scene.loader.loadModel("models/concrete/concrete.egg")
+            scene.building.reparentTo(scene.render)
+            scene.building.setScale(100)
+            scene.building.setHpr(0,0,0)
+            scene.building.setPos(i*200, 0, -50)
+
+    def buildRBuilding(self, scene):
+        for i in range(4):
+            scene.building = scene.loader.loadModel("models/r-building/r-building.egg")
+            scene.building.reparentTo(scene.render)
+            scene.building.setScale(100)
+            scene.building.setHpr(0,0,0)
+            scene.building.setPos(i*200, -400, -50)
+
+    
 
 class Water(ShowBase):
     pass
@@ -154,17 +164,19 @@ class MyApp(ShowBase):
         self.disableMouse() # disable camera control by mouse
         self.enableParticles() # enables particle calculations for physics
         self.makeMouseRelative()
-        self.accept("p", self.togglePause)
+        self.accept("p", self.togglePause) # "p" key for pause
         
         # Generate objects
         self.terrain = Terrain(self)
         self.player = Player(self)
+        self.building1 = Building(self, "concrete")
+        self.building2 = Building(self, "R")
 
     def makeMouseRelative(self):
-        props = WindowProperties()
-        props.setCursorHidden(True)
-        props.setMouseMode(WindowProperties.M_relative)
-        self.win.requestProperties(props)
+        props = WindowProperties() # initates window node
+        props.setCursorHidden(True) # hides cursor
+        props.setMouseMode(WindowProperties.M_relative) # cursor stays
+        self.win.requestProperties(props) # window accepts changes
 
     def togglePause(self):
         print ("pause pressed")
@@ -172,10 +184,10 @@ class MyApp(ShowBase):
             self.makeMouseRelative()
             MyApp.paused = False
         else:
-            props = WindowProperties()
-            props.setCursorHidden(False)
-            props.setMouseMode(WindowProperties.M_absolute)
-            self.win.requestProperties(props)
+            props = WindowProperties() # initiates window node
+            props.setCursorHidden(False) # cursor shows
+            props.setMouseMode(WindowProperties.M_absolute) # cursor moves
+            self.win.requestProperties(props) # window accepts changes
             MyApp.paused = True
 
 print ("starting app")
