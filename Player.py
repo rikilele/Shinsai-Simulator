@@ -1,4 +1,3 @@
-
 # importing panda3d modules and classes
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
@@ -11,7 +10,6 @@ from math import sin, cos, pi
 
 # The player's information
 class Player(ShowBase):
-
     def __init__(self, scene):
         self.health = 1 # between 0 to 1
         (self.posX, self.posY, self.posZ) = (0, -800, 500) # initial position
@@ -21,7 +19,14 @@ class Player(ShowBase):
         self.keyPressed(scene) # initiates function that runs on key press
         self.timerFired(scene) # initiates function that runs on timer
         self.mouseActivity(scene) # initiates function that runs on mouse
+        self.initiateCollision(scene) # initiates collision area around player
         print ("initiated")
+
+    def initiateCollision(self, scene):
+        area = CollisionSphere(0, 0, 0, 0.5)
+        playerNode = (scene.camera).attachNewNode(CollisionNode("cnode"))
+        playerNode.node().addSolid(area)
+        playerNode.show()
 
     ################################################################
     # Helpers for timerFired

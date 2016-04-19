@@ -1,4 +1,4 @@
-# Initial TP1
+# TP2
 # Riki Singh Khorana + rkhorana + MM
 
 # importing panda3d modules and classes
@@ -9,11 +9,13 @@ from direct.interval.IntervalGlobal import Sequence
 from panda3d.core import *
 from pandac.PandaModules import WindowProperties
 
+
 # importing modules for calculations
 from math import sin, cos, pi
 
 # import classes written by myself on separate files
 from Player import Player
+from Building import Building
 
 """ No LOD for terrain, but buildings and water definitely """
 
@@ -27,29 +29,6 @@ class Terrain(ShowBase):
         # Apply scale and position transforms on the model.
         self.bamboo.setScale(2)
         self.bamboo.setPos(0, 0, -40)
-
-class Building(ShowBase):
-    def __init__(self, scene, name):
-        if name == "concrete":
-            self.buildConcrete(scene)
-        if name == "R":
-            self.buildRBuilding(scene)
-
-    def buildConcrete(self, scene):
-        for i in range(4):
-            scene.building = scene.loader.loadModel("models/concrete/concrete.egg")
-            scene.building.reparentTo(scene.render)
-            scene.building.setScale(100)
-            scene.building.setHpr(0,0,0)
-            scene.building.setPos(i*200, 0, -50)
-
-    def buildRBuilding(self, scene):
-        for i in range(4):
-            scene.building = scene.loader.loadModel("models/r-building/r-building.egg")
-            scene.building.reparentTo(scene.render)
-            scene.building.setScale(100)
-            scene.building.setHpr(0,0,0)
-            scene.building.setPos(i*200, -400, -50)
 
 class Water(ShowBase):
     pass
