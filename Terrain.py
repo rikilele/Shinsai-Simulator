@@ -13,4 +13,4 @@ class Terrain(ShowBase):
         self.terrain.reparentTo(scene.render)
         # Apply scale and position transforms on the model.
         self.terrain.setScale(200)
-        self.terrain.setPos(0, 10000, -40)
+        self.terrain.setPos(0, 0, -40)

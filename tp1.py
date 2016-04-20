@@ -16,11 +16,10 @@ from math import sin, cos, pi
 from Player import Player
 from Building import Building
 from Terrain import Terrain
+from Water import Water
 
 """ No LOD for terrain, but buildings and water definitely """
 
-class Water(ShowBase):
-    pass
 class Glass(ShowBase):
     pass
 class Citizen(ShowBase):
@@ -37,6 +36,7 @@ class MyApp(ShowBase):
         # Initialize collision handlers
         self.traverser = CollisionTraverser("main")
         base.cTrav = self.traverser # allows collision to be tested every frame
+        self.traverser.showCollisions(render) # shows collision
         self.pusher = CollisionHandlerPusher()
         self.lifter = CollisionHandlerFloor()
         self.queue = CollisionHandlerQueue()
@@ -46,6 +46,7 @@ class MyApp(ShowBase):
         self.terrain = Terrain(self)
         self.player = Player(self)
         self.building1 = Building(self, "concrete")
+        self.water = Water(self)
 
     ################################################################
     # Data Helpers
@@ -85,6 +86,14 @@ class MyApp(ShowBase):
     # Helpers for timerFired
     ################################################################
 
+    # adapted from Ball-in-Maze example : main.py
+    def playerCollision(self, task):
+        for i in range(self.queue.getNumEntries()):
+            entry = self.queue.getEntry(i)
+            name = entry.getIntoNode().getName()
+            print (name)
+        return Task.cont
+
     ################################################################
     # Event handlers
     ################################################################
@@ -95,7 +104,7 @@ class MyApp(ShowBase):
     
     # adds task that should be fired every second
     def timerFired(self):
-        pass
+        taskMgr.add(self.playerCollision, "player collision")
 
     def mouseActivity(self):
         pass

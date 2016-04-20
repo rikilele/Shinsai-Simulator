@@ -17,10 +17,19 @@ class Player(ShowBase):
         (self.posX, self.posY, self.posZ) = (0, -800, 500) # initial position
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
         self.gravity = 1
-        self.speed = 20 # depends on gender and age
+        self.speed = 5 # depends on gender and age
         self.keyPressed(scene) # initiates function that runs on key press
         self.timerFired(scene) # initiates function that runs on timer
         self.mouseActivity(scene) # initiates function that runs on mouse
+        self.initiateCollision(scene) # initiates collision nodes
+
+    def initiateCollision(self, scene):
+        barrier = CollisionSphere(0, 0, 0, 120)
+        playerNodeP = (scene.camera).attachNewNode(CollisionNode('barrier'))
+        playerNodeP.node().addSolid(barrier)
+        # add to traverser
+        scene.traverser.addCollider(playerNodeP ,scene.queue)
+
 
     ################################################################
     # Helpers for timerFired
