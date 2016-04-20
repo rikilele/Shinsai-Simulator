@@ -15,19 +15,9 @@ from math import sin, cos, pi
 # import classes written by myself on separate files
 from Player import Player
 from Building import Building
+from Terrain import Terrain
 
 """ No LOD for terrain, but buildings and water definitely """
-
-# used only to load city terrain specified by user
-class Terrain(ShowBase):
-    def __init__(self, scene):
-
-        self.bamboo = scene.loader.loadModel("environment")
-        # Reparent the model to render.
-        self.bamboo.reparentTo(scene.render)
-        # Apply scale and position transforms on the model.
-        self.bamboo.setScale(2)
-        self.bamboo.setPos(0, 0, -40)
 
 class Water(ShowBase):
     pass
