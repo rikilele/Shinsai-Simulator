@@ -9,7 +9,6 @@ from direct.interval.IntervalGlobal import Sequence
 from panda3d.core import *
 from pandac.PandaModules import WindowProperties
 
-
 # importing modules for calculations
 from math import sin, cos, pi
 
@@ -53,6 +52,37 @@ class MyApp(ShowBase):
         self.player = Player(self)
         self.building1 = Building(self, "concrete")
         self.building2 = Building(self, "R")
+
+        # Keep objects in list
+        self.objects = [self.player, self.building1, self.building2]
+
+        # list of objects that collide
+        self.pusher = CollisionHandlerPusher()
+        self.traverser = CollisionTraverser("main")
+        base.cTrav = self.traverser # allows collision to be tested every frame
+        self.readObjects()
+        
+        smiley = loader.loadModel('smiley.egg')
+        fromObject = smiley.attachNewNode(CollisionNode('colNode'))
+        fromObject.node().addSolid(CollisionSphere(0, 0, 0, 1))
+        smiley.reparentTo(self.render)
+        smiley.setScale(30)
+        smiley.setPos(0, -1000, 0)
+         
+        # self.pusher.addCollider(fromObject, smiley)
+        # self.traverser.addCollider(fromObject, self.pusher)
+
+    # for collision detection
+    def readObjects(self):
+        for entity in self.objects:
+            try:
+                for information in entity.collidable:
+                    (fromObject, obj) = information
+                    (self.pusher).addCollider(fromObject, obj)
+                    (self.traverser).addCollider(fromObject, self.pusher)
+                    print ("added in pusher!")
+            except:
+                print ("didn't add pusher")
 
     def makeMouseRelative(self):
         props = WindowProperties() # initates window node

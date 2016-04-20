@@ -5,6 +5,8 @@ from direct.actor.Actor import Actor
 from panda3d.core import *
 from pandac.PandaModules import WindowProperties
 
+# scene == the app's main window (self)
+
 class Building(ShowBase):
     def __init__(self, scene, name):
         if name == "concrete":

@@ -9,6 +9,8 @@ from pandac.PandaModules import WindowProperties
 from math import sin, cos, pi
 
 # The player's information
+# scene is the app's main window (self)
+
 class Player(ShowBase):
     def __init__(self, scene):
         self.health = 1 # between 0 to 1
@@ -19,14 +21,14 @@ class Player(ShowBase):
         self.keyPressed(scene) # initiates function that runs on key press
         self.timerFired(scene) # initiates function that runs on timer
         self.mouseActivity(scene) # initiates function that runs on mouse
+        self.collidable = [] # list to store collidables
         self.initiateCollision(scene) # initiates collision area around player
-        print ("initiated")
 
     def initiateCollision(self, scene):
-        area = CollisionSphere(0, 0, 0, 0.5)
-        playerNode = (scene.camera).attachNewNode(CollisionNode("cnode"))
-        playerNode.node().addSolid(area)
-        playerNode.show()
+        area = CollisionSphere(0, 0, 0, 100) # creates spherical "barrier"
+        playerNode = (scene.camera).attachNewNode(CollisionNode("player"))
+        playerNode.node().addSolid(area) # renders the sphere
+        (self.collidable).append((playerNode, scene.camera))
 
     ################################################################
     # Helpers for timerFired
@@ -83,6 +85,7 @@ class Player(ShowBase):
     ################################################################
 
     """Want to set maximum mouse (x, y)"""
+
     def lookAround(self, scene):
         # template taken from:
         # http://www.panda3d.org/manual/index.php/Mouse_Support
