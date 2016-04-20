@@ -14,4 +14,3 @@ class Terrain(ShowBase):
         # Apply scale and position transforms on the model.
         self.terrain.setScale(200)
         self.terrain.setPos(0, 10000, -40)
-        self.terrain.setCollideMask(BitMask32.bit(0))

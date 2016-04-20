@@ -17,18 +17,10 @@ class Player(ShowBase):
         (self.posX, self.posY, self.posZ) = (0, -800, 500) # initial position
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
         self.gravity = 1
-        self.speed = 3 # depends on gender and age
+        self.speed = 20 # depends on gender and age
         self.keyPressed(scene) # initiates function that runs on key press
         self.timerFired(scene) # initiates function that runs on timer
         self.mouseActivity(scene) # initiates function that runs on mouse
-        self.collidable = [] # list to store collidables
-        self.initiateCollision(scene) # initiates collision area around player
-
-    def initiateCollision(self, scene):
-        area = CollisionSphere(0, 0, 0, 100) # creates spherical "barrier"
-        playerNode = (scene.camera).attachNewNode(CollisionNode("player"))
-        playerNode.node().addSolid(area) # renders the sphere
-        (self.collidable).append((playerNode, scene.camera))
 
     ################################################################
     # Helpers for timerFired
@@ -58,24 +50,6 @@ class Player(ShowBase):
 
     ''' Temporary Solution.
         A Bug exists in being able to bipass the building'''
-        
-    def resolveCollision(self, scene):
-        if scene.cameraCollided:
-            isDown = base.mouseWatcherNode.is_button_down
-            magnitude = self.speed*self.health # speed depends on health
-            radians = self.H * (pi/180)
-            if isDown("w"): # forwards
-                self.posX -= magnitude*-sin(radians)*2
-                self.posY -= magnitude*cos(radians)*2
-            elif isDown("s"): # backwards
-                self.posX -= magnitude*sin(radians)*2
-                self.posY -= magnitude*-cos(radians)*2
-            elif isDown("a"): # left
-                self.posX -= magnitude*-cos(radians)*1.6 # side-step is slower
-                self.posY -= magnitude*-sin(radians)*1.6
-            elif isDown("d"): # right
-                self.posX -= magnitude*cos(radians)*1.6
-                self.posY -= magnitude*sin(radians)*1.6
     
     def move(self, scene):
         if scene.paused == False:
@@ -94,7 +68,6 @@ class Player(ShowBase):
             elif isDown("d"): # right
                 self.posX += magnitude*cos(radians)*0.8
                 self.posY += magnitude*sin(radians)*0.8
-            self.resolveCollision(scene)
         return Task.cont
 
     def jump(self):

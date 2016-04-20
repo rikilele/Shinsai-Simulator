@@ -32,48 +32,32 @@ class MyApp(ShowBase):
 
     def __init__(self):
 
-        self.initialize()
+        self.initializeFunctions()
+
+        # Initialize collision handlers
+        self.traverser = CollisionTraverser("main")
+        base.cTrav = self.traverser # allows collision to be tested every frame
+        self.pusher = CollisionHandlerPusher()
+        self.lifter = CollisionHandlerFloor()
+        self.queue = CollisionHandlerQueue()
+        self.cameraCollided = False
 
         # Generate objects
         self.terrain = Terrain(self)
         self.player = Player(self)
         self.building1 = Building(self, "concrete")
 
-        # Initialize list that keeps rendered objects
-        self.objects = [self.player]
-
-        # Initialize collision handlers
-        self.pusher = CollisionHandlerPusher()
-        self.traverser = CollisionTraverser("main")
-        self.queue = CollisionHandlerQueue()
-        base.cTrav = self.traverser # allows collision to be tested every frame
-        self.cameraCollided = False
-
-        self.readObjects()
-
     ################################################################
     # Data Helpers
     ################################################################
 
-    def initialize(self):
+    def initializeFunctions(self):
         ShowBase.__init__(self) # initializes Panda window from ShowBase
         self.disableMouse() # disable camera control by mouse
         self.makeMouseRelative()
         self.keyPressed()
         self.timerFired()
         self.mouseActivity()
-
-    # for collision detection
-    def readObjects(self):
-        # (self.traverser).addCollider(self.camera, self.queue)
-        for entity in self.objects:
-            try:
-                for information in entity.collidable:
-                    (fromObject, obj) = information
-                    (self.traverser).addCollider(fromObject, self.queue)
-                    print ("added collision!")
-            except:
-                print ("didn't add collision")
 
     def makeMouseRelative(self):
         props = WindowProperties() # initates window node
@@ -101,15 +85,6 @@ class MyApp(ShowBase):
     # Helpers for timerFired
     ################################################################
 
-    def checkCollision(self, task):
-        collided = False
-        for entry in self.queue.getEntries():
-            print ("detected")
-            print(entry)
-            collided = True
-        self.cameraCollided = collided
-        return Task.cont
-
     ################################################################
     # Event handlers
     ################################################################
@@ -120,7 +95,7 @@ class MyApp(ShowBase):
     
     # adds task that should be fired every second
     def timerFired(self):
-        taskMgr.add(self.checkCollision, "collision")
+        pass
 
     def mouseActivity(self):
         pass
