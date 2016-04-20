@@ -41,54 +41,59 @@ class MyApp(ShowBase):
     paused = False
 
     def __init__(self):
-        ShowBase.__init__(self) # initializes Panda window from ShowBase
-        self.disableMouse() # disable camera control by mouse
-        self.enableParticles() # enables particle calculations for physics
-        self.makeMouseRelative()
-        self.accept("p", self.togglePause) # "p" key for pause
-        
+
+        self.initialize()
+
         # Generate objects
         self.terrain = Terrain(self)
         self.player = Player(self)
         self.building1 = Building(self, "concrete")
-        self.building2 = Building(self, "R")
 
-        # Keep objects in list
-        self.objects = [self.player, self.building1, self.building2]
+        # Initialize list that keeps rendered objects
+        self.objects = [self.player]
 
-        # list of objects that collide
+        # Initialize collision handlers
         self.pusher = CollisionHandlerPusher()
         self.traverser = CollisionTraverser("main")
+        self.queue = CollisionHandlerQueue()
         base.cTrav = self.traverser # allows collision to be tested every frame
+        self.cameraCollided = False
+
         self.readObjects()
-        
-        smiley = loader.loadModel('smiley.egg')
-        fromObject = smiley.attachNewNode(CollisionNode('colNode'))
-        fromObject.node().addSolid(CollisionSphere(0, 0, 0, 1))
-        smiley.reparentTo(self.render)
-        smiley.setScale(30)
-        smiley.setPos(0, -1000, 0)
-         
-        # self.pusher.addCollider(fromObject, smiley)
-        # self.traverser.addCollider(fromObject, self.pusher)
+
+    ################################################################
+    # Data Helpers
+    ################################################################
+
+    def initialize(self):
+        ShowBase.__init__(self) # initializes Panda window from ShowBase
+        self.disableMouse() # disable camera control by mouse
+        self.makeMouseRelative()
+        self.keyPressed()
+        self.timerFired()
+        self.mouseActivity()
 
     # for collision detection
     def readObjects(self):
+        # (self.traverser).addCollider(self.camera, self.queue)
         for entity in self.objects:
             try:
                 for information in entity.collidable:
                     (fromObject, obj) = information
-                    (self.pusher).addCollider(fromObject, obj)
-                    (self.traverser).addCollider(fromObject, self.pusher)
-                    print ("added in pusher!")
+                    (self.traverser).addCollider(fromObject, self.queue)
+                    print ("added collision!")
             except:
-                print ("didn't add pusher")
+                print ("didn't add collision")
 
     def makeMouseRelative(self):
         props = WindowProperties() # initates window node
         props.setCursorHidden(True) # hides cursor
         props.setMouseMode(WindowProperties.M_relative) # cursor stays
         self.win.requestProperties(props) # window accepts changes
+
+    ################################################################
+    # Helpers for keyPressed
+    ################################################################
 
     def togglePause(self):
         print ("pause pressed")
@@ -101,6 +106,34 @@ class MyApp(ShowBase):
             props.setMouseMode(WindowProperties.M_absolute) # cursor moves
             self.win.requestProperties(props) # window accepts changes
             MyApp.paused = True
+
+    ################################################################
+    # Helpers for timerFired
+    ################################################################
+
+    def checkCollision(self, task):
+        collided = False
+        for entry in self.queue.getEntries():
+            print ("detected")
+            print(entry)
+            collided = True
+        self.cameraCollided = collided
+        return Task.cont
+
+    ################################################################
+    # Event handlers
+    ################################################################
+
+    # responds to key press
+    def keyPressed(self):
+        self.accept("p", self.togglePause) # "p" key for pause
+    
+    # adds task that should be fired every second
+    def timerFired(self):
+        taskMgr.add(self.checkCollision, "collision")
+
+    def mouseActivity(self):
+        pass
 
 print ("starting app")
 app = MyApp()

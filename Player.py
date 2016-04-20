@@ -56,6 +56,27 @@ class Player(ShowBase):
     # Helpers for keyPressed
     ################################################################
 
+    ''' Temporary Solution.
+        A Bug exists in being able to bipass the building'''
+        
+    def resolveCollision(self, scene):
+        if scene.cameraCollided:
+            isDown = base.mouseWatcherNode.is_button_down
+            magnitude = self.speed*self.health # speed depends on health
+            radians = self.H * (pi/180)
+            if isDown("w"): # forwards
+                self.posX -= magnitude*-sin(radians)*2
+                self.posY -= magnitude*cos(radians)*2
+            elif isDown("s"): # backwards
+                self.posX -= magnitude*sin(radians)*2
+                self.posY -= magnitude*-cos(radians)*2
+            elif isDown("a"): # left
+                self.posX -= magnitude*-cos(radians)*1.6 # side-step is slower
+                self.posY -= magnitude*-sin(radians)*1.6
+            elif isDown("d"): # right
+                self.posX -= magnitude*cos(radians)*1.6
+                self.posY -= magnitude*sin(radians)*1.6
+    
     def move(self, scene):
         if scene.paused == False:
             isDown = base.mouseWatcherNode.is_button_down
@@ -73,6 +94,7 @@ class Player(ShowBase):
             elif isDown("d"): # right
                 self.posX += magnitude*cos(radians)*0.8
                 self.posY += magnitude*sin(radians)*0.8
+            self.resolveCollision(scene)
         return Task.cont
 
     def jump(self):
