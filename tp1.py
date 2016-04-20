@@ -59,6 +59,8 @@ class MyApp(ShowBase):
         self.keyPressed()
         self.timerFired()
         self.mouseActivity()
+        # Set the background color to blue
+        self.win.setClearColor((0.5, 0.8, 1, 1))
 
     def makeMouseRelative(self):
         props = WindowProperties() # initates window node
