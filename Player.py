@@ -14,10 +14,10 @@ from math import sin, cos, pi
 class Player(ShowBase):
     def __init__(self, scene):
         self.health = 1 # between 0 to 1
-        (self.posX, self.posY, self.posZ) = (0, -800, 500) # initial position
+        (self.posX, self.posY, self.posZ) = (0, 0, 0) # initial position
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
         self.gravity = 1
-        self.speed = 100 # depends on gender and age
+        self.speed = 50 # depends on gender and age
         self.keyPressed(scene) # initiates function that runs on key press
         self.timerFired(scene) # initiates function that runs on timer
         self.mouseActivity(scene) # initiates function that runs on mouse
@@ -37,7 +37,7 @@ class Player(ShowBase):
     def setWalkingRay(self, scene):    
         # for walkingon  terrain
         self.groundRay = CollisionRay()
-        self.groundRay.setOrigin(0, 0, 9)
+        self.groundRay.setOrigin(0, 0, 0)
         self.groundRay.setDirection(0, 0, -1)
         self.groundCol = CollisionNode('groundRay')
         self.groundCol.addSolid(self.groundRay)
@@ -60,13 +60,25 @@ class Player(ShowBase):
         return Task.cont
 
     # applies gravity to player, also camera
-    def fall(self, task):
-        g = self.gravity
-        if (self.posZ > 0 or self.gravity < 0):
-            self.posZ -= min (g, self.posZ) # to not go underground
-            self.gravity += 1.0
-        elif (self.posZ == 0):
-            self.gravity = 1 # the value of the gravitational constant
+    def fall(self, scene):
+        if scene.paused == False:
+            g = self.gravity
+            if (self.posZ > 0 or self.gravity < 0):
+                self.posZ -= min (g, self.posZ) # to not go underground
+                self.gravity += 1.0
+            elif (self.posZ == 0):
+                self.gravity = 1 # the value of the gravitational constant
+        return Task.cont
+
+    def walkOnTerrain(self, scene):
+        currPos = scene.camera.getPos()
+        entries = list(scene.queue.getEntries())
+        entries.sort(key=lambda x: x.getSurfacePoint(scene.render).getZ())
+
+        if len(entries) > 0: # and entries[0].getIntoNode().getName() == "terrain":
+            height = entries[0].getSurfacePoint(scene.render).getZ()
+            self.posZ = height+50
+
         return Task.cont
 
     ################################################################
@@ -130,7 +142,8 @@ class Player(ShowBase):
     
     # adds task that should be fired every second
     def timerFired(self, scene):
-        taskMgr.add(self.fall, "gravity manipulation")
+        # taskMgr.add(self.fall, "gravity", extraArgs=[scene])
+        taskMgr.add(self.walkOnTerrain, "terrain trace", extraArgs=[scene])
         taskMgr.add(self.manageCam, "cam", extraArgs=[scene])
 
     def mouseActivity(self, scene):

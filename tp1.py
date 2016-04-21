@@ -36,7 +36,7 @@ class MyApp(ShowBase):
         # Initialize collision handlers
         self.traverser = CollisionTraverser("main")
         base.cTrav = self.traverser # allows collision to be tested every frame
-        self.traverser.showCollisions(render) # shows collision
+        # self.traverser.showCollisions(render) # shows collision
         self.pusher = CollisionHandlerPusher()
         self.lifter = CollisionHandlerFloor()
         self.queue = CollisionHandlerQueue()
@@ -46,7 +46,7 @@ class MyApp(ShowBase):
         self.terrain = Terrain(self)
         self.player = Player(self)
         self.building1 = Building(self, "concrete")
-        self.water = Water(self)
+        # self.water = Water(self)
 
     ################################################################
     # Data Helpers

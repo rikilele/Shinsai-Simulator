@@ -21,7 +21,7 @@ class Water(ShowBase):
         self.water.reparentTo(scene.render)
         # Apply scale and position transforms on the model.
         self.water.setScale(1000)
-        self.startPos = (0, 0, -1000)
+        self.startPos = (1000, 1000, -1000)
         self.water.setPos(Point3(self.startPos))
         self.magnitude = 100 # the size of earthquake
         self.startSimulation(scene, self.magnitude)
