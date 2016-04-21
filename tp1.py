@@ -61,12 +61,23 @@ class MyApp(ShowBase):
         self.mouseActivity()
         # Set the background color to blue
         self.win.setClearColor((0.5, 0.8, 1, 1))
+        self.createLights()
 
     def makeMouseRelative(self):
         props = WindowProperties() # initates window node
         props.setCursorHidden(True) # hides cursor
         props.setMouseMode(WindowProperties.M_relative) # cursor stays
         self.win.requestProperties(props) # window accepts changes
+
+    def createLights(self):
+        # light settings
+        # Sun
+        self.dlight = DirectionalLight('dlight')
+        self.dlight.setColor(VBase4(255, 255, 255, 1))
+        self.dlnp = render.attachNewNode(self.dlight)
+        self.dlnp.setHpr(0, -40, 0)
+        self.render.setLight(self.dlnp)
+        
 
     ################################################################
     # Helpers for keyPressed

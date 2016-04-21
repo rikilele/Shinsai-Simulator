@@ -17,18 +17,34 @@ class Player(ShowBase):
         (self.posX, self.posY, self.posZ) = (0, -800, 500) # initial position
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
         self.gravity = 1
-        self.speed = 5 # depends on gender and age
+        self.speed = 100 # depends on gender and age
         self.keyPressed(scene) # initiates function that runs on key press
         self.timerFired(scene) # initiates function that runs on timer
         self.mouseActivity(scene) # initiates function that runs on mouse
         self.initiateCollision(scene) # initiates collision nodes
 
     def initiateCollision(self, scene):
+        self.setCollisionArea(scene)
+        self.setWalkingRay(scene)
+        
+    def setCollisionArea(self, scene):
         barrier = CollisionSphere(0, 0, 0, 120)
         playerNodeP = (scene.camera).attachNewNode(CollisionNode('barrier'))
         playerNodeP.node().addSolid(barrier)
         # add to traverser
         scene.traverser.addCollider(playerNodeP ,scene.queue)
+
+    def setWalkingRay(self, scene):    
+        # for walkingon  terrain
+        self.groundRay = CollisionRay()
+        self.groundRay.setOrigin(0, 0, 9)
+        self.groundRay.setDirection(0, 0, -1)
+        self.groundCol = CollisionNode('groundRay')
+        self.groundCol.addSolid(self.groundRay)
+        self.groundCol.setFromCollideMask(CollideMask.bit(20))
+        self.groundCol.setIntoCollideMask(CollideMask.allOff())
+        self.groundNodePath = (scene.camera).attachNewNode(self.groundCol)
+        (scene.traverser).addCollider(self.groundNodePath, scene.queue)
 
 
     ################################################################
@@ -82,7 +98,7 @@ class Player(ShowBase):
     def jump(self):
         # if self.posZ == 0:
         #     self.gravity = -10
-        self.gravity = -10
+        self.gravity = -50
 
     ################################################################
     # Helpers for mouseActivity
