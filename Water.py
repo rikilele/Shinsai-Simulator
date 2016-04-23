@@ -28,7 +28,7 @@ class Water(ShowBase):
 
     def startSimulation(self, scene, magnitude):
         endPos = (0, 0, self.magnitude)
-        animation = self.water.posInterval(6, 
+        animation = self.water.posInterval(15, 
                                             Point3(endPos), 
                                             startPos=Point3(self.startPos))
  

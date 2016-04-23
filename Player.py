@@ -73,12 +73,16 @@ class Player(ShowBase):
     def walkOnTerrain(self, scene):
         currPos = scene.camera.getPos()
         entries = list(scene.queue.getEntries())
+        # lambda function sorts by highest Z value
         entries.sort(key=lambda x: x.getSurfacePoint(scene.render).getZ())
-
-        if len(entries) > 0: # and entries[0].getIntoNode().getName() == "terrain":
-            height = entries[0].getSurfacePoint(scene.render).getZ()
-            self.posZ = height+50
-
+        if len(entries) > 0:
+            terrain = entries[0]
+            pathName = str(terrain.getIntoNodePath())
+            print ("colliding with " + pathName)
+            # checks to see if it's colliding with terrain
+            if pathName == "render/"+scene.terrainName+"/Mesh1 Group1 Model":
+                height = terrain.getSurfacePoint(scene.render).getZ()
+                self.posZ = height+50
         return Task.cont
 
     ################################################################

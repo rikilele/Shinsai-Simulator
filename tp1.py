@@ -43,7 +43,8 @@ class MyApp(ShowBase):
         self.cameraCollided = False
 
         # Generate objects
-        self.terrain = Terrain(self)
+        self.terrain = Terrain(self, "modelIwaki")
+        self.terrainName = self.terrain.name
         self.player = Player(self)
         self.building1 = Building(self, "concrete")
         # self.water = Water(self)
@@ -61,7 +62,7 @@ class MyApp(ShowBase):
         self.mouseActivity()
         # Set the background color to blue
         self.win.setClearColor((0.5, 0.8, 1, 1))
-        self.createLights()
+        # self.createLights()
 
     def makeMouseRelative(self):
         props = WindowProperties() # initates window node
@@ -74,9 +75,15 @@ class MyApp(ShowBase):
         # Sun
         self.dlight = DirectionalLight('dlight')
         self.dlight.setColor(VBase4(255, 255, 255, 1))
-        self.dlnp = render.attachNewNode(self.dlight)
+        self.dlnp = self.render.attachNewNode(self.dlight)
         self.dlnp.setHpr(0, -40, 0)
         self.render.setLight(self.dlnp)
+
+        # Ambient
+        self.alight = AmbientLight('alight')
+        self.alight.setColor(VBase4(1, 0, 0, 1))
+        self.alnp = self.render.attachNewNode(self.alight)
+        self.render.setLight(self.alnp)
         
 
     ################################################################
@@ -103,8 +110,7 @@ class MyApp(ShowBase):
     def playerCollision(self, task):
         for i in range(self.queue.getNumEntries()):
             entry = self.queue.getEntry(i)
-            name = entry.getIntoNode().getName()
-            print (name)
+            print (entry)
         return Task.cont
 
     ################################################################

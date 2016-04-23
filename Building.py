@@ -23,7 +23,7 @@ class Building(ShowBase):
             building.setPos(i*500, 0, -50)
 
             # initiate collison settings
-            box = CollisionBox(Point3(0, 0, 0), 1, 1, 1)
+            box = CollisionBox(Point3(0, 0, 0), 1, 1, 3)
             cnodePath = building.attachNewNode(CollisionNode('box'))
             cnodePath.node().addSolid(box)
             cnodePath.show()
