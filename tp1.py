@@ -1,4 +1,4 @@
-# TP2
+# TP3
 # Riki Singh Khorana + rkhorana + MM
 
 # importing panda3d modules and classes
@@ -48,6 +48,7 @@ class MyApp(ShowBase):
         self.terrainName = self.terrain.name
         self.player = Player(self)
         self.building1 = Building(self, "concrete")
+        self.building2 = Building(self, "R")
         # self.water = Water(self)
 
     ################################################################

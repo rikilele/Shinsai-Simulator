@@ -11,8 +11,10 @@ class Building(ShowBase):
     def __init__(self, scene, name):
         if name == "concrete":
             self.buildConcrete(scene)
-        if name == "R":
+        elif name == "R":
             self.buildRBuilding(scene)
+        elif name == "house":
+            self.buildHouse(scene)
 
     def buildConcrete(self, scene):
         for i in range(4):
@@ -20,7 +22,7 @@ class Building(ShowBase):
             building.reparentTo(scene.render)
             building.setScale(100)
             building.setHpr(0,0,0)
-            building.setPos(i*500, 0, -100)
+            building.setPos(i*500, 0, -150)
 
             # initiate collison settings
             box = CollisionBox(Point3(0.7, 0, 1), 1, 1, 1.25)
@@ -34,4 +36,13 @@ class Building(ShowBase):
             building.reparentTo(scene.render)
             building.setScale(100)
             building.setHpr(0,0,0)
-            building.setPos(i*200, -400, -50)
+            building.setPos(i*500, -400, -150)
+
+            # initiate collison settings
+            box = CollisionBox(Point3(0.5, 0, 1), 1, 1, 1.25)
+            cnodePath = building.attachNewNode(CollisionNode('box'))
+            cnodePath.node().addSolid(box)
+            cnodePath.show()
+
+    def buildHouse(self, scene):
+        pass

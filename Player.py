@@ -14,10 +14,10 @@ from math import sin, cos, pi
 class Player(ShowBase):
     def __init__(self, scene):
         self.health = 1 # between 0 to 1
-        (self.posX, self.posY, self.posZ) = (0, 0, 0) # initial position
+        (self.posX, self.posY, self.posZ) = (1000, 6000, 0) # initial position
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
         self.gravity = 1
-        self.speed = 50 # depends on gender and age
+        self.speed = 20 # depends on gender and age
         self.keyPressed(scene) # initiates function that runs on key press
         self.timerFired(scene) # initiates function that runs on timer
         self.mouseActivity(scene) # initiates function that runs on mouse
@@ -28,11 +28,11 @@ class Player(ShowBase):
         self.setWalkingRay(scene)
         
     def setCollisionArea(self, scene):
-        barrier = CollisionSphere(0, 0, 0, 120)
-        playerNodeP = (scene.camera).attachNewNode(CollisionNode('barrier'))
-        playerNodeP.node().addSolid(barrier)
+        self.barrier = CollisionSphere(0, 0, 0, 120)
+        self.playerNodeP = (scene.camera).attachNewNode(CollisionNode('barrier'))
+        self.playerNodeP.node().addSolid(self.barrier)
         # add to traverser
-        scene.traverser.addCollider(playerNodeP ,scene.queue)
+        (scene.traverser).addCollider(self.playerNodeP ,scene.queue)
 
     def setWalkingRay(self, scene):    
         # for walkingon  terrain
@@ -45,7 +45,6 @@ class Player(ShowBase):
         self.groundCol.setIntoCollideMask(CollideMask.allOff())
         self.groundNodePath = (scene.camera).attachNewNode(self.groundCol)
         (scene.traverser).addCollider(self.groundNodePath, scene.queue)
-
 
     ################################################################
     # Helpers for timerFired
@@ -74,14 +73,18 @@ class Player(ShowBase):
         height = collision.getSurfacePoint(scene.render).getZ()
         self.posZ = height+50
 
+    def preventBump(self, scene, collision):
+        newX = collision.getSurfacePoint(scene.render).getX()
+        newY = collision.getSurfacePoint(scene.render).getX()
+        self.posX, self.posY = newX, newY
+
     # iterates through every collision to take care of
     def exploreMap(self, scene):
         # set up the information
         currPos = scene.camera.getPos()
         entries = list(scene.queue.getEntries())
-        # lambda function sorts by highest Z value
+        # lambda function sorts by highest displac value
         entries.sort(key=lambda x: x.getSurfacePoint(scene.render).getZ())
-
         if len(entries) > 0:
             for collision in entries:
                 player = str(collision.getFromNodePath())
@@ -92,7 +95,7 @@ class Player(ShowBase):
                 if scene.terrainName in into:
                     self.followTerrain(scene, collision)
                 elif "box" in into:
-                    print ("BoX")
+                    self.preventBump(scene, collision)
         return Task.cont
 
     ################################################################
@@ -154,7 +157,7 @@ class Player(ShowBase):
         taskMgr.add(self.move, "move with AWSD", extraArgs=[scene])
         scene.accept("space", self.jump)
     
-    # adds task that should be fired every second
+    # adds task that should be fired every frame
     def timerFired(self, scene):
         # taskMgr.add(self.fall, "gravity", extraArgs=[scene])
         taskMgr.add(self.exploreMap, "move in map", extraArgs=[scene])
