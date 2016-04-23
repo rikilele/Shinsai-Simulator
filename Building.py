@@ -20,10 +20,10 @@ class Building(ShowBase):
             building.reparentTo(scene.render)
             building.setScale(100)
             building.setHpr(0,0,0)
-            building.setPos(i*500, 0, -50)
+            building.setPos(i*500, 0, -100)
 
             # initiate collison settings
-            box = CollisionBox(Point3(0, 0, 0), 1, 1, 3)
+            box = CollisionBox(Point3(0.7, 0, 1), 1, 1, 1.25)
             cnodePath = building.attachNewNode(CollisionNode('box'))
             cnodePath.node().addSolid(box)
             cnodePath.show()

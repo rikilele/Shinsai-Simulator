@@ -70,19 +70,29 @@ class Player(ShowBase):
                 self.gravity = 1 # the value of the gravitational constant
         return Task.cont
 
-    def walkOnTerrain(self, scene):
+    def followTerrain(self, scene, collision):
+        height = collision.getSurfacePoint(scene.render).getZ()
+        self.posZ = height+50
+
+    # iterates through every collision to take care of
+    def exploreMap(self, scene):
+        # set up the information
         currPos = scene.camera.getPos()
         entries = list(scene.queue.getEntries())
         # lambda function sorts by highest Z value
         entries.sort(key=lambda x: x.getSurfacePoint(scene.render).getZ())
+
         if len(entries) > 0:
-            terrain = entries[0]
-            pathName = str(terrain.getIntoNodePath())
-            print ("colliding with " + pathName)
-            # checks to see if it's colliding with terrain
-            if pathName == "render/"+scene.terrainName+"/Mesh1 Group1 Model":
-                height = terrain.getSurfacePoint(scene.render).getZ()
-                self.posZ = height+50
+            for collision in entries:
+                player = str(collision.getFromNodePath())
+                into = str(collision.getIntoNodePath())
+                print (player)
+                print ("colliding with " + into)
+                # checks to see if it's colliding with terrain
+                if scene.terrainName in into:
+                    self.followTerrain(scene, collision)
+                elif "box" in into:
+                    print ("BoX")
         return Task.cont
 
     ################################################################
@@ -147,7 +157,7 @@ class Player(ShowBase):
     # adds task that should be fired every second
     def timerFired(self, scene):
         # taskMgr.add(self.fall, "gravity", extraArgs=[scene])
-        taskMgr.add(self.walkOnTerrain, "terrain trace", extraArgs=[scene])
+        taskMgr.add(self.exploreMap, "move in map", extraArgs=[scene])
         taskMgr.add(self.manageCam, "cam", extraArgs=[scene])
 
     def mouseActivity(self, scene):

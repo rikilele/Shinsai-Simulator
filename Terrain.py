@@ -9,9 +9,10 @@ class Terrain(ShowBase):
     def __init__(self, scene, name):
 
         self.name = name + ".egg"
-        self.terrain = scene.loader.loadModel("models/terrains/"+self.name)
+        self.path = "models/terrains/"+name+"/"+self.name
+        self.terrain = scene.loader.loadModel(self.path)
         # Reparent the model to render.
         self.terrain.reparentTo(scene.render)
         # Apply scale and position transforms on the model.
-        self.terrain.setScale(200)
-        self.terrain.setPos(0, 0, -40)
+        self.terrain.setScale(600)
+        self.terrain.setPos(0, 0, -140)

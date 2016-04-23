@@ -17,6 +17,7 @@ from Player import Player
 from Building import Building
 from Terrain import Terrain
 from Water import Water
+from Background import Background
 
 """ No LOD for terrain, but buildings and water definitely """
 
@@ -43,7 +44,7 @@ class MyApp(ShowBase):
         self.cameraCollided = False
 
         # Generate objects
-        self.terrain = Terrain(self, "modelIwaki")
+        self.terrain = Terrain(self, "modelMiyagi")
         self.terrainName = self.terrain.name
         self.player = Player(self)
         self.building1 = Building(self, "concrete")
@@ -106,11 +107,9 @@ class MyApp(ShowBase):
     # Helpers for timerFired
     ################################################################
 
-    # adapted from Ball-in-Maze example : main.py
+    # debugging purposes
     def playerCollision(self, task):
-        for i in range(self.queue.getNumEntries()):
-            entry = self.queue.getEntry(i)
-            print (entry)
+        self.traverser.showCollisions(self.render)
         return Task.cont
 
     ################################################################
