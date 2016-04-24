@@ -11,7 +11,6 @@ from pandac.PandaModules import WindowProperties
 
 # importing modules for calculations
 from math import sin, cos, pi
-import random
 
 # import classes written by myself on separate files
 from Player import Player
@@ -88,15 +87,14 @@ class MyApp(ShowBase):
         self.render.setLight(self.alnp)
 
     def buildBuildings(self):
-        self.building = Building(self, "concrete")
-        self.building2 = Building(self, "R")
-        self.building3 = Building(self, "house1")
-        self.building4 = Building(self, "tower")
-        self.building5 = Building(self, "house2")
-        self.building6 = Building(self, "house3")
-        self.building7 = Building(self, "build")
+        self.building = Building(self, "concrete", 0, 0, 0)
+        self.building2 = Building(self, "R", 1000, 1000, 0)
+        self.building3 = Building(self, "house1", 2000, 2000, 0)
+        self.building4 = Building(self, "tower", 3000, 3000, 0)
+        self.building5 = Building(self, "house2", 4000, 4000, 0)
+        self.building6 = Building(self, "house3", 5000, 5000, 0)
+        self.building7 = Building(self, "build", 6000, 6000, 0)
         pass
-        
 
     ################################################################
     # Helpers for keyPressed
