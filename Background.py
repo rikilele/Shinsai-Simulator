@@ -1,3 +1,4 @@
+# scene == the app's main window (self)
 # importing panda3d modules and classes
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task

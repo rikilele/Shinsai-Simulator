@@ -74,10 +74,11 @@ class Player(ShowBase):
         self.posZ = height+50
 
     def preventBump(self, scene, collision):
-        newX = collision.getSurfacePoint(scene.render).getX()
-        newY = collision.getSurfacePoint(scene.render).getX()
-        self.posX, self.posY = newX, newY
-
+        # newX = collision.getSurfacePoint(scene.render).getX()
+        # newY = collision.getSurfacePoint(scene.render).getX()
+        # self.posX, self.posY = newX, newY
+        pass
+        
     # iterates through every collision to take care of
     def exploreMap(self, scene):
         # set up the information

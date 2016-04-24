@@ -11,6 +11,7 @@ from pandac.PandaModules import WindowProperties
 
 # importing modules for calculations
 from math import sin, cos, pi
+import random
 
 # import classes written by myself on separate files
 from Player import Player
@@ -47,8 +48,7 @@ class MyApp(ShowBase):
         self.terrain = Terrain(self, "modelMiyagi")
         self.terrainName = self.terrain.name
         self.player = Player(self)
-        self.building1 = Building(self, "concrete")
-        self.building2 = Building(self, "R")
+        self.buildBuildings()
         # self.water = Water(self)
 
     ################################################################
@@ -86,6 +86,16 @@ class MyApp(ShowBase):
         self.alight.setColor(VBase4(1, 0, 0, 1))
         self.alnp = self.render.attachNewNode(self.alight)
         self.render.setLight(self.alnp)
+
+    def buildBuildings(self):
+        self.building = Building(self, "concrete")
+        self.building2 = Building(self, "R")
+        self.building3 = Building(self, "house1")
+        self.building4 = Building(self, "tower")
+        self.building5 = Building(self, "house2")
+        self.building6 = Building(self, "house3")
+        self.building7 = Building(self, "build")
+        pass
         
 
     ################################################################
