@@ -22,7 +22,7 @@ class Building(ShowBase):
     def buildConcrete(self, scene):
         building = scene.loader.loadModel("models/concrete/concrete.egg")
         building.reparentTo(scene.render)
-        building.setScale(800)
+        building.setScale(850)
         building.setHpr(0,0,0)
         building.setPos(self.posX, self.posY, self.posZ)
         # initiate collison settings
@@ -34,7 +34,7 @@ class Building(ShowBase):
     def buildRBuilding(self, scene):
         building = scene.loader.loadModel("models/r-building/r-building.egg")
         building.reparentTo(scene.render)
-        building.setScale(800)
+        building.setScale(850)
         building.setHpr(0,0,0)
         building.setPos(self.posX, self.posY, self.posZ)
         # initiate collison settings

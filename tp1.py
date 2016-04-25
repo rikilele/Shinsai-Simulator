@@ -13,10 +13,10 @@ from pandac.PandaModules import WindowProperties
 from math import sin, cos, pi
 
 # import classes written by myself on separate files
-from Player import Player
-from Terrain import Terrain
-from Water import Water
-from Background import Background
+from classes.Player import Player
+from classes.Terrain import Terrain
+from classes.Water import Water
+from classes.Background import Background
 
 """ No LOD for terrain, but buildings and water definitely """
 
