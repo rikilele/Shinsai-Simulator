@@ -14,7 +14,6 @@ from math import sin, cos, pi
 
 # import classes written by myself on separate files
 from Player import Player
-from Building import Building
 from Terrain import Terrain
 from Water import Water
 from Background import Background
@@ -47,7 +46,6 @@ class MyApp(ShowBase):
         self.terrain = Terrain(self, "modelMiyagi")
         self.terrainName = self.terrain.name
         self.player = Player(self)
-        self.buildBuildings()
         # self.water = Water(self)
 
     ################################################################
@@ -85,16 +83,6 @@ class MyApp(ShowBase):
         self.alight.setColor(VBase4(1, 0, 0, 1))
         self.alnp = self.render.attachNewNode(self.alight)
         self.render.setLight(self.alnp)
-
-    def buildBuildings(self):
-        self.building = Building(self, "concrete", 0, 0, 0)
-        self.building2 = Building(self, "R", 1000, 1000, 0)
-        self.building3 = Building(self, "house1", 2000, 2000, 0)
-        self.building4 = Building(self, "tower", 3000, 3000, 0)
-        self.building5 = Building(self, "house2", 4000, 4000, 0)
-        self.building6 = Building(self, "house3", 5000, 5000, 0)
-        self.building7 = Building(self, "build", 6000, 6000, 0)
-        pass
 
     ################################################################
     # Helpers for keyPressed

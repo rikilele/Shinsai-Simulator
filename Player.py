@@ -14,7 +14,7 @@ from math import sin, cos, pi
 class Player(ShowBase):
     def __init__(self, scene):
         self.health = 1 # between 0 to 1
-        (self.posX, self.posY, self.posZ) = (1000, 6000, 0) # initial position
+        (self.posX, self.posY, self.posZ) = (1000, 6000, 140) # initial position
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
         self.gravity = 1
         self.speed = 20 # depends on gender and age
@@ -78,7 +78,7 @@ class Player(ShowBase):
         # newY = collision.getSurfacePoint(scene.render).getX()
         # self.posX, self.posY = newX, newY
         pass
-        
+
     # iterates through every collision to take care of
     def exploreMap(self, scene):
         # set up the information
