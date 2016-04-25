@@ -12,12 +12,12 @@ from math import sin, cos, pi
 # scene is the app's main window (self)
 
 class Player(ShowBase):
-    def __init__(self, scene):
+    def __init__(self, scene, posX, posY):
         self.health = 1 # between 0 to 1
-        (self.posX, self.posY, self.posZ) = (0, 0, 100) # initial position
+        (self.posX, self.posY, self.posZ) = (posX, posY, 100) # initial position
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
         self.gravity = 1
-        self.speed = 20 # depends on gender and age
+        self.speed = 200 # depends on gender and age
         self.keyPressed(scene) # initiates function that runs on key press
         self.timerFired(scene) # initiates function that runs on timer
         self.mouseActivity(scene) # initiates function that runs on mouse
@@ -55,6 +55,7 @@ class Player(ShowBase):
         # update camera position
         scene.camera.setPos(self.posX, self.posY, self.posZ)
         scene.camera.setHpr(self.H, self.P, self.R)
+        print self.posX, self.posY, self.posZ
         # Task.cont allows the function to keep running
         return Task.cont
 
@@ -78,8 +79,8 @@ class Player(ShowBase):
             for collision in entries:
                 player = str(collision.getFromNodePath())
                 into = str(collision.getIntoNodePath())
-                print (player)
-                print ("colliding with " + into)
+                # print (player)
+                # print ("colliding with " + into)
                 # checks to see if it's colliding with terrain
                 if scene.terrainName in into:
                     self.followTerrain(scene, collision)

@@ -43,9 +43,10 @@ class MyApp(ShowBase):
         self.cameraCollided = False
 
         # Generate objects
-        self.terrain = Terrain(self, "modelMiyagi")
+        self.terrain = Terrain(self, "modelIwaki")
         self.terrainName = self.terrain.name
-        self.player = Player(self)
+        (posX, posY) = self.terrain.origin
+        self.player = Player(self, posX, posY)
         # self.water = Water(self)
 
     ################################################################

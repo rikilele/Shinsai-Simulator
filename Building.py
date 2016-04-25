@@ -46,8 +46,8 @@ class Building(ShowBase):
     def buildHouse1(self, scene):
         building = scene.loader.loadModel("models/house/house1/house1.egg")
         building.reparentTo(scene.render)
-        building.setScale(200)
-        building.setHpr(0,0,0)
+        building.setScale(130)
+        building.setHpr(90,0,0)
         building.setPos(self.posX, self.posY, self.posZ)
         # initiate collison settings
         box = CollisionBox(Point3(0.7, 0, 1), 1, 1, 1.25)
@@ -58,8 +58,8 @@ class Building(ShowBase):
     def buildHouse2(self, scene):
         building = scene.loader.loadModel("models/house/house2/house2.egg")
         building.reparentTo(scene.render)
-        building.setScale(200)
-        building.setHpr(0,0,0)
+        building.setScale(130)
+        building.setHpr(90,0,0)
         building.setPos(self.posX, self.posY, self.posZ)
         # initiate collison settings
         box = CollisionBox(Point3(0.7, 0, 1), 1, 1, 1.25)
@@ -70,8 +70,8 @@ class Building(ShowBase):
     def buildHouse3(self, scene):
         building = scene.loader.loadModel("models/house/house3/house3.egg")
         building.reparentTo(scene.render)
-        building.setScale(200)
-        building.setHpr(0,0,0)
+        building.setScale(130)
+        building.setHpr(90,0,0)
         building.setPos(self.posX, self.posY, self.posZ)
         # initiate collison settings
         box = CollisionBox(Point3(0.7, 0, 1), 1, 1, 1.25)

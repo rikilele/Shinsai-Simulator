@@ -20,7 +20,7 @@ class Terrain(ShowBase):
         # Reparent the model to render.
         self.terrain.reparentTo(scene.render)
         # Apply scale and position transforms on the model.
-        self.terrain.setScale(600)
+        self.terrain.setScale(200)
         self.terrain.setPos(0, 0, 0)
         # Attributes for making city grid
         self.cityLatt = 9
@@ -33,8 +33,9 @@ class Terrain(ShowBase):
         secondPoint = self.terrain.getTightBounds()[1]
         (x1, x2) = firstPoint.getX(), secondPoint.getX()
         (y1, y2) = firstPoint.getY(), secondPoint.getY()
-        (length, width) = (abs(x1-x2)/self.cityLong, abs(y1-y2)/self.cityLatt)
-        origin = (min(x1, x2), min(y1, y2)) # tuple of origin
+        (length, width) = (abs(x1-x2)/self.cityLatt, abs(y1-y2)/self.cityLong)
+        origin = (max(x1, x2), max(y1, y2)) # tuple of origin
+        self.origin = origin
         cityMap = self.createTown()
         self.placeBuilds(scene, cityMap, length, width, origin)
         
@@ -54,43 +55,38 @@ class Terrain(ShowBase):
             currX -= length
 
     def renderBlocks(self, scene, block, length, width, origin):
-        # currX = origin[0]
-        # for row in block:
-        #     currY = origin[1]
-        #     for cell in row:
-        #         if cell == "tower":
-        #             self.tower = Building(scene, "tower", currX, currY, 0)
-        #         elif type(cell) == list:
-        #             pass
-        #         elif cell == -1:
-        #             print "NOTHING"
-        #         currY -= width
-        #     currX -= length
-        return
-        self.building = Building(scene, "concrete", 0, 0, 0)
-        self.building2 = Building(scene, "R", -1000, 1000, 0)
-        self.building3 = Building(scene, "house1", 2000, 2000, 0)
-        self.building4 = Building(scene, "tower", 3000, 3000, 0)
-        self.building5 = Building(scene, "house2", 4000, 4000, 0)
-        self.building6 = Building(scene, "house3", 5000, 5000, 0)
-        self.building7 = Building(scene, "build", -10000, 6000, 0)
+        currX = origin[0]
+        for row in block:
+            currY = origin[1]
+            for cell in row:
+                if cell == 1:
+                    cell = Building(scene, "house1", currX, currY, 50)
+                elif cell == 2:
+                    cell = Building(scene, "house2", currX, currY, 50)
+                elif cell == 3:
+                    cell = Building(scene, "house3", currX, currY, 50)
+                elif cell == 4:
+                    cell = Building(scene, "build", currX, currY, 50)
+                elif cell == 5:
+                    cell = Building(scene, "R", currX, currY, 50)
+                elif cell == 6:
+                    Building(scene, "concrete", currX, currY, 50)
+                elif cell == 7:
+                    Building(scene, "build", currX, currY, 50)
+                currY -= width
+            currX -= length
 
     ########################################################
     # algorithm for creating a city map
     ########################################################
 
     # initialize 2d list representing block of a town
-    def makeGrid(self, rows=6, cols=9, name="area"):
+    def makeGrid(self, rows=7, cols=10):
         # initialize list
         grid = []
         # generate 2d list with 0s as place holder
         for row in range(rows):
             grid += [[0]*cols]
-        if name == "area":
-            # add -1s, which represent the road
-            for row in grid:
-                row.append(-1)
-            grid.append([-1]*(cols+1))
         return grid
 
     #########################################################
@@ -102,12 +98,10 @@ class Terrain(ShowBase):
     # creates a grid map of a residential area
     def makeResArea(self):
         grid = self.makeGrid() # initialize grid
-        for row in grid:
-            row[4] = -1 # add road in the middle of grid
-        for start in [0,3]: # these have the faces of the houses
+        for start in range(0,7,2): # these have the faces of the houses
             index = 0
             for col in grid[start]:
-                if col == 0: # if space is open
+                if col == 0 and index%2 == 0: # if space is open
                     grid[start][index] = random.randint(1,3) # 3 houses avail.
                 index += 1
         return grid
@@ -122,8 +116,8 @@ class Terrain(ShowBase):
     # creates a grid map of a downtown area
     def makeDowntownArea(self):
         grid = self.makeGrid() # initialize grid
-        for start in [0,3]: # these rows have the faces of the buildings
-            index = 2
+        for start in [3,6]: # these rows have the faces of the buildings
+            index = 0
             grid[start][index] = random.randint(4,7) # 4 buildings available
             grid[start][index+3] = random.randint(4,7)
             grid[start][index+6] = random.randint(4,7)
@@ -138,7 +132,7 @@ class Terrain(ShowBase):
 
     # creates grid consisting of open, residential, and downtown area assignment
     def makeTownGrid(self):
-        grid = self.makeGrid(self.cityLatt, self.cityLong, "town")
+        grid = self.makeGrid(self.cityLatt, self.cityLong)
         (numRows, numCols) = (len(grid), len(grid[0]))
         # initialize areas
         rowCount = 0
