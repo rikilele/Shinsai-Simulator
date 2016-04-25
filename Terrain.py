@@ -66,8 +66,7 @@ class Terrain(ShowBase):
         #             print "NOTHING"
         #         currY -= width
         #     currX -= length
-        pass
-
+        return
         self.building = Building(scene, "concrete", 0, 0, 0)
         self.building2 = Building(scene, "R", -1000, 1000, 0)
         self.building3 = Building(scene, "house1", 2000, 2000, 0)

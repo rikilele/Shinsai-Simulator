@@ -14,7 +14,7 @@ from math import sin, cos, pi
 class Player(ShowBase):
     def __init__(self, scene):
         self.health = 1 # between 0 to 1
-        (self.posX, self.posY, self.posZ) = (1000, 6000, 140) # initial position
+        (self.posX, self.posY, self.posZ) = (0, 0, 100) # initial position
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
         self.gravity = 1
         self.speed = 20 # depends on gender and age
@@ -58,17 +58,6 @@ class Player(ShowBase):
         # Task.cont allows the function to keep running
         return Task.cont
 
-    # applies gravity to player, also camera
-    def fall(self, scene):
-        if scene.paused == False:
-            g = self.gravity
-            if (self.posZ > 0 or self.gravity < 0):
-                self.posZ -= min (g, self.posZ) # to not go underground
-                self.gravity += 1.0
-            elif (self.posZ == 0):
-                self.gravity = 1 # the value of the gravitational constant
-        return Task.cont
-
     def followTerrain(self, scene, collision):
         height = collision.getSurfacePoint(scene.render).getZ()
         self.posZ = height+50
@@ -82,7 +71,6 @@ class Player(ShowBase):
     # iterates through every collision to take care of
     def exploreMap(self, scene):
         # set up the information
-        currPos = scene.camera.getPos()
         entries = list(scene.queue.getEntries())
         # lambda function sorts by highest displac value
         entries.sort(key=lambda x: x.getSurfacePoint(scene.render).getZ())
@@ -125,11 +113,6 @@ class Player(ShowBase):
                 self.posY += magnitude*sin(radians)*0.8
         return Task.cont
 
-    def jump(self):
-        # if self.posZ == 0:
-        #     self.gravity = -10
-        self.gravity = -50
-
     ################################################################
     # Helpers for mouseActivity
     ################################################################
@@ -156,11 +139,9 @@ class Player(ShowBase):
     # responds to key press
     def keyPressed(self, scene):
         taskMgr.add(self.move, "move with AWSD", extraArgs=[scene])
-        scene.accept("space", self.jump)
     
     # adds task that should be fired every frame
     def timerFired(self, scene):
-        # taskMgr.add(self.fall, "gravity", extraArgs=[scene])
         taskMgr.add(self.exploreMap, "move in map", extraArgs=[scene])
         taskMgr.add(self.manageCam, "cam", extraArgs=[scene])
 
