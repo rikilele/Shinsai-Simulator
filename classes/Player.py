@@ -15,7 +15,7 @@ import random
 class Player(ShowBase):
     def __init__(self, scene, posX, posY):
         self.health = 1 # between 0 to 1
-        (self.posX, self.posY, self.posZ) = (posX, posY, 100) # initial position
+        (self.posX, self.posY, self.posZ) = (posX, posY, scene.maxZ)
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
         self.speed = 150 # depends on gender and age
         self.submerged = False
@@ -66,6 +66,7 @@ class Player(ShowBase):
         # update camera position
         scene.camera.setPos(self.posX, self.posY, self.posZ)
         scene.camera.setHpr(self.H, self.P, self.R)
+        scene.compass.lookAt(scene.terrain.north.building)
         # Task.cont allows the function to keep running
         return Task.cont
 
@@ -76,7 +77,7 @@ class Player(ShowBase):
     def caughtInTsunami(self, scene):
         self.health -= 0.001
         # displace player due to water
-        jerk = random.randint(1,int(scene.magnitude/7))
+        jerk = random.randint(1,int(scene.magnitude/5))
         if bool(random.getrandbits(1)): # randomly assign True of False
             self.posY -= jerk
         elif bool(random.getrandbits(1)):

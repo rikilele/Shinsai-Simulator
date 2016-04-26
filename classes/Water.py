@@ -43,7 +43,6 @@ class Water(ShowBase):
         hitTsunami = self.water.posInterval(2, 
                                             Point3(endPos), 
                                             Point3(middlePos))
- 
         # Create and play the sequence that coordinates the intervals.
         simulation = Sequence(bringTsunami, hitTsunami, name="simulation")
         simulation.start()

@@ -28,6 +28,10 @@ class Terrain(ShowBase):
         self.cityLatt = 9
         self.cityLong = 11
         self.buildBuildings(scene) # place all the buildings
+        self.placeNorth(scene) # places a "North" reference point
+
+    def placeNorth(self, scene):
+        self.north = Building(scene, "tower", -10**5, -10**15, 10**3)
 
     def buildBuildings(self, scene):
         # set dimensions

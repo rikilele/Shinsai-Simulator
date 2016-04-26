@@ -34,16 +34,16 @@ class MyApp(ShowBase):
 
     def __init__(self):
         self.initializeFunctions()
-        # Initialize screen on text
-        self.put2D()
         # Initialize collision handlers
         self.initializeCollision()
         # Generate terrain information
         self.initializeScene()
         # Generate interactive objects
         self.player = Player(self, self.posX, self.posY)
-        self.tsunamiTime = 3
+        self.tsunamiTime = 5
         self.tsunami = Water(self)
+        # Initialize screen on text
+        self.put2D()
 
     ################################################################
     # Data Helpers
@@ -62,9 +62,20 @@ class MyApp(ShowBase):
     def put2D(self):
         # This code was taken and adapted from samples/ball-in-maze.py
         self.instructions = \
-            OnscreenText(text="Use WASD keys to move, Mouse to look around",
+            OnscreenText(text="Use WASD keys to move \
+                             \nUse mouse to look around\
+                             \nPress P to enable mouse outside window",
                          parent=base.a2dTopLeft, align=TextNode.ALeft,
                          pos=(0.05, -0.08), fg=(1, 1, 1, 1), scale=.06)
+        # Place compass on screen to navigate
+        self.compassCircle = OnscreenImage(image="images/compass.png", 
+                                           pos=(-1.05, 0, -0.74), scale=0.17)
+        self.compassCircle.setTransparency(TransparencyAttrib.MAlpha)
+        self.compassCircle.setAlphaScale(0.5)
+        self.compass = self.loader.loadModel("models/compass/pointer.egg")
+        self.compass.setScale(0.027)
+        self.compass.setPos(-2.8, 10, -2)
+        self.compass.reparentTo(self.camera)
 
     def initializeCollision(self):
         self.traverser = CollisionTraverser("main")
@@ -132,10 +143,10 @@ class MyApp(ShowBase):
         color = (1,1,1,1) if MyApp.inTsunami == False else (1,0,0,1)
         self.timeClock = \
         OnscreenText(text="%d:%d%d" % (time//60, time//1%60//10,time//1%60%10),
-                     parent=base.a2dBottomRight, align=TextNode.ARight, fg=color, 
-                     pos=(-0.1, 0.1), scale=0.15, shadow=(0, 0, 0, 1))  
+                    parent=base.a2dBottomRight, align=TextNode.ARight, fg=color, 
+                    pos=(-0.2, 0.22), scale=0.15, shadow=(0, 0, 0, 1))  
         self.healthBar = DirectWaitBar(text="Health", value=self.player.health, 
-                                       scale=0.6, pos=(0,.4,-0.87), range=1)
+                                       scale=0.6, pos=(0,.4,-0.74), range=1)
         if self.player.submerged == True:
             self.waterEffect = \
             OnscreenImage(image="images/undersea.jpg", pos=(0, 0, 0), scale=2)
@@ -146,8 +157,6 @@ class MyApp(ShowBase):
     def watchEnd(self, task):
         if self.player.health <= 0:
             MyApp.isOver = True
-            # self.end = \
-            # OnscreenImage(image="images/fukushima.jpg", pos=(0, 0, 0), scale=1)
             self.message = \
                 OnscreenText(text="Simulation is done.",
                              pos=(0, 0), fg=(1, 1, 1, 1), scale=0.2)
