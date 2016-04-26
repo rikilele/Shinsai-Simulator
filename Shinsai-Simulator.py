@@ -19,12 +19,12 @@ from classes.Water import Water
 from classes.Background import Background
 from classes.Water import Water
 
-""" No LOD for terrain, but buildings and water definitely """
-
-class Glass(ShowBase):
-    pass
-class Citizen(ShowBase):
-    pass
+""" 
+Note:
+The Tsunami scale is measured in magnitudes 0.0 ~ 10.0
+In this program, the inputed magnitude will be converted to a value 0 ~ 100
+This will determine the height of the Tsunami
+"""
 
 class MyApp(ShowBase):
 
@@ -33,8 +33,6 @@ class MyApp(ShowBase):
 
     def __init__(self):
         self.initializeFunctions()
-        # Clock to keep track of time after earthquake
-        self.initializeClock()
         # Initialize collision handlers
         self.initializeCollision()
         # Generate terrain information
@@ -57,11 +55,6 @@ class MyApp(ShowBase):
         # Set the background color to blue
         self.win.setClearColor((0.5, 0.8, 1, 1))
         # self.createLights()
-
-    def initializeClock(self):
-        frameTime = globalClock.getFrameTime()
-        print (frameTime)
-
 
     def initializeCollision(self):
         self.traverser = CollisionTraverser("main")

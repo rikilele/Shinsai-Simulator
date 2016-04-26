@@ -34,9 +34,9 @@ class Water(ShowBase):
         startPos = (0, scene.length*2, scene.minZ-scene.height)
         self.water.setPos(Point3(startPos))
         middlePos = (0, scene.length*1.5, 
-            scene.minZ - scene.height*0.7 + scene.maxZ*(scene.magnitude)/100)
+            scene.minZ - scene.height*0.7 + scene.maxZ*(scene.magnitude)/90)
         endPos = (0, 0, 
-            scene.minZ - scene.height*0.7 + scene.maxZ*(scene.magnitude)/100)
+            scene.minZ - scene.height*0.7 + scene.maxZ*(scene.magnitude)/90)
         bringTsunami = self.water.posInterval(2,
                                               Point3(middlePos),
                                               Point3(startPos))

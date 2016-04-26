@@ -63,7 +63,7 @@ class Player(ShowBase):
 
     def followTerrain(self, scene, collision):
         height = collision.getSurfacePoint(scene.render).getZ()
-        self.posZ = height+50
+        self.posZ = height+40
 
     # iterates through every collision to take care of
     def exploreMap(self, scene):
