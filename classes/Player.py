@@ -36,11 +36,14 @@ class Player(ShowBase):
 
     def setWalkingRay(self, scene):    
         # for walking on  terrain
-        self.groundRay = CollisionRay()
+        self.groundRay, self.skyRay = CollisionRay(), CollisionRay()
         self.groundRay.setOrigin(0, 0, 0)
+        self.skyRay.setOrigin(0, 0, 0)
         self.groundRay.setDirection(0, 0, -1)
-        self.groundCol = CollisionNode('groundRay')
+        self.skyRay.setDirection(0, 0, 1)
+        self.groundCol = CollisionNode('rays')
         self.groundCol.addSolid(self.groundRay)
+        self.groundCol.addSolid(self.skyRay)
         self.groundCol.setFromCollideMask(CollideMask.bit(20))
         self.groundCol.setIntoCollideMask(CollideMask.allOff())
         self.groundNodePath = (scene.camera).attachNewNode(self.groundCol)
@@ -73,9 +76,11 @@ class Player(ShowBase):
                 player = str(collision.getFromNodePath())
                 into = str(collision.getIntoNodePath())
                 # print (player)
-                # print ("colliding with " + into)
+                print ("colliding with " + into)
                 # checks to see if it's colliding with terrain
                 if scene.terrainName in into:
+                    self.followTerrain(scene, collision)
+                elif "waves" in into:
                     self.followTerrain(scene, collision)
         return Task.cont
 

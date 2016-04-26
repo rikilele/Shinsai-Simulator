@@ -17,11 +17,12 @@ class Terrain(ShowBase):
         self.name = name + ".egg"
         self.path = "models/terrains/"+name+"/"+self.name
         self.terrain = scene.loader.loadModel(self.path)
+        self.scale = 450
         # self.coordinates = self.findGeomData()
         # Reparent the model to render.
         self.terrain.reparentTo(scene.render)
         # Apply scale and position transforms on the model.
-        self.terrain.setScale(450)
+        self.terrain.setScale(self.scale)
         self.terrain.setPos(0, 0, 0)
         # Attributes for making city grid
         self.cityLatt = 9
@@ -34,9 +35,14 @@ class Terrain(ShowBase):
         secondPoint = self.terrain.getTightBounds()[1]
         (x1, x2) = firstPoint.getX(), secondPoint.getX()
         (y1, y2) = firstPoint.getY(), secondPoint.getY()
+        (z1, z2) = firstPoint.getZ(), secondPoint.getZ()
+        # set measurements
         (length, width) = (abs(x1-x2)/self.cityLatt, abs(y1-y2)/self.cityLong)
+        (height, self.maxZ, self.minZ) = (abs(z1-z2), max(z1, z2), min(z1, z2))
         origin = (max(x1, x2), max(y1, y2)) # tuple of origin
         self.origin = origin
+        self.dimensions = (length*self.cityLatt, width*self.cityLong, height)
+        # create town based on measurements
         cityMap = self.createTown()
         self.placeBuilds(scene, cityMap, length, width, origin)
 

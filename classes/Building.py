@@ -25,6 +25,7 @@ class Building(ShowBase):
         self.building.setScale(130)
         self.building.setHpr(90,0,0)
         self.building.setPos(self.posX, self.posY, self.posZ)
+        self.building.setTwoSided(True)
 
     def buildHouse2(self, scene):
         self.building = scene.loader.loadModel("models/house/house2/house2.egg")
@@ -32,6 +33,7 @@ class Building(ShowBase):
         self.building.setScale(130)
         self.building.setHpr(90,0,0)
         self.building.setPos(self.posX, self.posY, self.posZ)
+        self.building.setTwoSided(True)
 
     def buildHouse3(self, scene):
         self.building = scene.loader.loadModel("models/house/house3/house3.egg")
@@ -39,6 +41,7 @@ class Building(ShowBase):
         self.building.setScale(130)
         self.building.setHpr(90,0,0)
         self.building.setPos(self.posX, self.posY, self.posZ)
+        self.building.setTwoSided(True)
     
     def buildTower(self, scene):
         self.building = scene.loader.loadModel("models/tower/tower.egg")
@@ -46,6 +49,7 @@ class Building(ShowBase):
         self.building.setScale(100)
         self.building.setHpr(0,0,0)
         self.building.setPos(self.posX, self.posY, self.posZ)
+        self.building.setTwoSided(True)
 
     def buildConcrete(self, scene):
         self.building = scene.loader.loadModel("models/concrete/concrete.egg")
@@ -53,6 +57,7 @@ class Building(ShowBase):
         self.building.setScale(850)
         self.building.setHpr(0,0,0)
         self.building.setPos(self.posX, self.posY, self.posZ)
+        self.building.setTwoSided(True)
 
     def buildRBuilding(self, scene):
         self.building = scene.loader.loadModel("models/r/r-building.egg")
@@ -60,6 +65,7 @@ class Building(ShowBase):
         self.building.setScale(850)
         self.building.setHpr(0,0,0)
         self.building.setPos(self.posX, self.posY, self.posZ)
+        self.building.setTwoSided(True)
 
 
 
@@ -69,3 +75,4 @@ class Building(ShowBase):
         self.building.setScale(80)
         self.building.setHpr(0,0,0)
         self.building.setPos(self.posX, self.posY, self.posZ)
+        self.building.setTwoSided(True)

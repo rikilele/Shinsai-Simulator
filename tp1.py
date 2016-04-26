@@ -44,14 +44,11 @@ class MyApp(ShowBase):
         self.terrain = Terrain(self, "yokohama") # insert the filename you want
         self.terrainName = self.terrain.name
         (self.posX, self.posY) = self.terrain.origin
-        (self.length, self.width, self.height) = (self.terrain.dimensions)
-        (self.maxZ, self.minZ) = self.terrain.maxZ, self.terrain.minZ
-        self.magnitude = 100
-        self.scale = self.terrain.scale
+        (self.length, self.width) = (self.terrain.dimensions)
 
         #Generate objects
-        self.player = Player(self, self.posX, self.posY)
-        self.water = Water(self)
+        self.player = Player(self, posX, posY)
+        self.water = Water(self, self.posX, self.posY, self.length, self.width, 1000)
 
     ################################################################
     # Data Helpers

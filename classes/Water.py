@@ -14,23 +14,30 @@ all objects rendered into the scene as part of the Tsunami must have the name
 
 class Water(ShowBase):
     def __init__(self, scene):
-        self.water = scene.loader.loadModel("models/water/water.egg")
+        self.startSimulation(scene)
+
+    def startSimulation(self, scene):
+        self.water = scene.loader.loadModel("models/water/waves.egg")
         # Reparent the model to render.
         self.water.reparentTo(scene.render)
+        self.water.setTwoSided(True) # water visible from inside
         # Apply scale and position transforms on the model.
-        self.water.setScale(1000)
-        self.startPos = (1000, 1000, 100)
-        self.water.setPos(Point3(self.startPos))
-        self.magnitude = 100 # the size of earthquake
-        self.startSimulation(scene, self.magnitude)
-
-    def startSimulation(self, scene, magnitude):
-        endPos = (0, 0, self.magnitude)
-        animation = self.water.posInterval(15, 
+        self.water.setScale(scene.scale+100) # so Tsunami wraps
+        self.water.setSz(scene.scale-100)
+        startPos = (0, scene.length*2, scene.minZ-scene.height)
+        self.water.setPos(Point3(startPos))
+        middlePos = (0, scene.length*1.5, 
+            scene.minZ - scene.height*0.7 + scene.maxZ*(scene.magnitude)/100)
+        endPos = (0, 0, 
+            scene.minZ - scene.height*0.7  + scene.maxZ*(scene.magnitude)/100)
+        bringTsunami = self.water.posInterval(2,
+                                              Point3(middlePos),
+                                              Point3(startPos))
+        hitTsunami = self.water.posInterval(2, 
                                             Point3(endPos), 
-                                            startPos=Point3(self.startPos))
+                                            Point3(middlePos))
  
         # Create and play the sequence that coordinates the intervals.
-        simulation = Sequence(animation, name="simulation")
-        simulation.loop()
-        print ("ended Tsunami")
+        simulation = Sequence(bringTsunami, hitTsunami, name="simulation")
+        simulation.start()
+        print ("released Tsunami")
