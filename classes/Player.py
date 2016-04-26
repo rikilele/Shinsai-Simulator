@@ -75,10 +75,14 @@ class Player(ShowBase):
 
     def caughtInTsunami(self, scene):
         self.health -= 0.001
-        jerk = random.randint(1,int(scene.magnitude/10))
-        # self.posX += jerk
-        # else:
-        #     self.posY -= jerk
+        # displace player due to water
+        jerk = random.randint(1,int(scene.magnitude/7))
+        if bool(random.getrandbits(1)): # randomly assign True of False
+            self.posY -= jerk
+        elif bool(random.getrandbits(1)):
+            self.posX += jerk
+        else:    
+            self.posX -= jerk
 
     # iterates through every collision to take care of
     def exploreMap(self, scene):

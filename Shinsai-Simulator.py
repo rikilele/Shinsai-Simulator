@@ -9,8 +9,8 @@ from direct.gui.DirectGui import *
 from panda3d.core import *
 from pandac.PandaModules import WindowProperties
 
-# importing modules for calculations
-from math import sin, cos, pi
+# importing modules for convenience
+import sys
 
 # import classes written by myself on separate files
 from classes.Player import Player
@@ -42,7 +42,7 @@ class MyApp(ShowBase):
         self.initializeScene()
         # Generate interactive objects
         self.player = Player(self, self.posX, self.posY)
-        self.tsunamiTime = 10
+        self.tsunamiTime = 3
         self.tsunami = Water(self)
 
     ################################################################
@@ -64,8 +64,7 @@ class MyApp(ShowBase):
         self.instructions = \
             OnscreenText(text="Use WASD keys to move, Mouse to look around",
                          parent=base.a2dTopLeft, align=TextNode.ALeft,
-                         pos=(0.05, -0.08), fg=(1, 1, 1, 1), scale=.06,
-                         shadow=(0, 0, 0, 0))
+                         pos=(0.05, -0.08), fg=(1, 1, 1, 1), scale=.06)
 
     def initializeCollision(self):
         self.traverser = CollisionTraverser("main")
@@ -141,14 +140,22 @@ class MyApp(ShowBase):
             self.waterEffect = \
             OnscreenImage(image="images/undersea.jpg", pos=(0, 0, 0), scale=2)
             self.waterEffect.setTransparency(TransparencyAttrib.MAlpha)
-            self.waterEffect.setAlphaScale(0.8-(self.player.health*0.5))
+            self.waterEffect.setAlphaScale(1-(self.player.health*0.6))
         return Task.cont
 
     def watchEnd(self, task):
         if self.player.health <= 0:
             MyApp.isOver = True
-            self.end = \
-            OnscreenImage(image="images/fukushima.jpg", pos=(0, 0, 0), scale=1)
+            # self.end = \
+            # OnscreenImage(image="images/fukushima.jpg", pos=(0, 0, 0), scale=1)
+            self.message = \
+                OnscreenText(text="Simulation is done.",
+                             pos=(0, 0), fg=(1, 1, 1, 1), scale=0.2)
+            self.nextInstructions = \
+                OnscreenText(text="Press Escape to exit",
+                             pos=(0, -0.3), fg=(1, 1, 1, 1), scale=0.2)
+            self.accept("escape", self.moveOut)
+            return Task.done
         return Task.cont
 
     ################################################################
@@ -164,10 +171,13 @@ class MyApp(ShowBase):
         taskMgr.add(self.playerCollision, "player collision")
         taskMgr.add(self.checkTime, "time")
         taskMgr.add(self.displayData, "player data")
-        taskMgr.add(self.watchEnd, "simulation end?")
+        taskMgr.add(self.watchEnd, "simulation end")
 
     def mouseActivity(self):
         pass
+
+    def moveOut(self):
+        sys.exit()
 
 print ("starting app")
 app = MyApp()
