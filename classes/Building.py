@@ -67,8 +67,6 @@ class Building(ShowBase):
         self.building.setPos(self.posX, self.posY, self.posZ)
         self.building.setTwoSided(True)
 
-
-
     def buildBuild(self, scene):
         self.building = scene.loader.loadModel("models/build/build.egg")
         self.building.reparentTo(scene.render)

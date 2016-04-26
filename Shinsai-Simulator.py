@@ -4,8 +4,8 @@
 # importing panda3d modules and classes
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
-from direct.actor.Actor import Actor
 from direct.interval.IntervalGlobal import Sequence
+from direct.gui.DirectGui import *
 from panda3d.core import *
 from pandac.PandaModules import WindowProperties
 
@@ -30,15 +30,19 @@ class MyApp(ShowBase):
 
     paused = False
     inTsunami = False
+    isOver = False
 
     def __init__(self):
         self.initializeFunctions()
+        # Initialize screen on text
+        self.put2D()
         # Initialize collision handlers
         self.initializeCollision()
         # Generate terrain information
         self.initializeScene()
         # Generate interactive objects
         self.player = Player(self, self.posX, self.posY)
+        self.tsunamiTime = 10
         self.tsunami = Water(self)
 
     ################################################################
@@ -54,7 +58,14 @@ class MyApp(ShowBase):
         self.mouseActivity()
         # Set the background color to blue
         self.win.setClearColor((0.5, 0.8, 1, 1))
-        # self.createLights()
+
+    def put2D(self):
+        # This code was taken and adapted from samples/ball-in-maze.py
+        self.instructions = \
+            OnscreenText(text="Use WASD keys to move, Mouse to look around",
+                         parent=base.a2dTopLeft, align=TextNode.ALeft,
+                         pos=(0.05, -0.08), fg=(1, 1, 1, 1), scale=.06,
+                         shadow=(0, 0, 0, 0))
 
     def initializeCollision(self):
         self.traverser = CollisionTraverser("main")
@@ -76,25 +87,11 @@ class MyApp(ShowBase):
         props.setMouseMode(WindowProperties.M_relative) # cursor stays
         self.win.requestProperties(props) # window accepts changes
 
-    def createLights(self):
-        # light settings
-        # Sun
-        self.dlight = DirectionalLight('dlight')
-        self.dlight.setColor(VBase4(255, 255, 255, 1))
-        self.dlnp = self.render.attachNewNode(self.dlight)
-        self.dlnp.setHpr(0, -40, 0)
-        self.render.setLight(self.dlnp)
-
-        # Ambient
-        self.alight = AmbientLight('alight')
-        self.alight.setColor(VBase4(1, 0, 0, 1))
-        self.alnp = self.render.attachNewNode(self.alight)
-        self.render.setLight(self.alnp)
-
     ################################################################
     # Helpers for keyPressed
     ################################################################
 
+    # press P to enable mouse control outside of window
     def togglePause(self):
         print ("pause pressed")
         if MyApp.paused:
@@ -116,11 +113,42 @@ class MyApp(ShowBase):
         # self.traverser.showCollisions(self.render)
         return Task.cont
 
+    # checks for the time of the tsunami
     def checkTime(self, task):
+        if (MyApp.isOver): return Task.done # end task if simulations is over
         frameTime = globalClock.getFrameTime()
-        print ("time is" + str(frameTime))
-        if frameTime > 10:
+        if frameTime > self.tsunamiTime:
             MyApp.inTsunami = True
+        return Task.cont
+
+    # display timer, health bar, and underwater effect 
+    def displayData(self, task):
+        if (MyApp.isOver): return Task.done # end task if simulations is over
+        time = globalClock.getFrameTime()
+        try: 
+            self.timeClock.destroy()
+            self.healthBar.destroy()
+            self.waterEffect.destroy()
+        except: pass
+        color = (1,1,1,1) if MyApp.inTsunami == False else (1,0,0,1)
+        self.timeClock = \
+        OnscreenText(text="%d:%d%d" % (time//60, time//1%60//10,time//1%60%10),
+                     parent=base.a2dBottomRight, align=TextNode.ARight, fg=color, 
+                     pos=(-0.1, 0.1), scale=0.15, shadow=(0, 0, 0, 1))  
+        self.healthBar = DirectWaitBar(text="Health", value=self.player.health, 
+                                       scale=0.6, pos=(0,.4,-0.87), range=1)
+        if self.player.submerged == True:
+            self.waterEffect = \
+            OnscreenImage(image="images/undersea.jpg", pos=(0, 0, 0), scale=2)
+            self.waterEffect.setTransparency(TransparencyAttrib.MAlpha)
+            self.waterEffect.setAlphaScale(0.8-(self.player.health*0.5))
+        return Task.cont
+
+    def watchEnd(self, task):
+        if self.player.health <= 0:
+            MyApp.isOver = True
+            self.end = \
+            OnscreenImage(image="images/fukushima.jpg", pos=(0, 0, 0), scale=1)
         return Task.cont
 
     ################################################################
@@ -135,6 +163,8 @@ class MyApp(ShowBase):
     def timerFired(self):
         taskMgr.add(self.playerCollision, "player collision")
         taskMgr.add(self.checkTime, "time")
+        taskMgr.add(self.displayData, "player data")
+        taskMgr.add(self.watchEnd, "simulation end?")
 
     def mouseActivity(self):
         pass

@@ -7,6 +7,7 @@ from pandac.PandaModules import WindowProperties
 
 # importing modules for calculations
 from math import sin, cos, pi
+import random
 
 # The player's information
 # scene is the app's main window (self)
@@ -16,17 +17,19 @@ class Player(ShowBase):
         self.health = 1 # between 0 to 1
         (self.posX, self.posY, self.posZ) = (posX, posY, 100) # initial position
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
-        self.gravity = 1
         self.speed = 150 # depends on gender and age
-        self.keyPressed(scene) # initiates function that runs on key press
-        self.timerFired(scene) # initiates function that runs on timer
-        self.mouseActivity(scene) # initiates function that runs on mouse
-        self.initiateCollision(scene) # initiates collision nodes
+        self.submerged = False
+        self.keyPressed(scene) # initiates functions that runs on key press
+        self.timerFired(scene) # initiates functions that runs on timer
+        self.mouseActivity(scene) # initiates functions that runs on mouse
+        self.initiateCollision(scene)
 
+    # initiates the collision settings so player can walk on map
     def initiateCollision(self, scene):
         self.setCollisionArea(scene)
         self.setWalkingRay(scene)
-        
+    
+    # adds barrier to collide with buildings
     def setCollisionArea(self, scene):
         self.barrier = CollisionSphere(0, 0, 0, 120)
         self.playerNodeP = (scene.camera).attachNewNode(CollisionNode('barrier'))
@@ -34,20 +37,25 @@ class Player(ShowBase):
         # add to traverser
         (scene.traverser).addCollider(self.playerNodeP ,scene.queue)
 
+    # adds ray that points up & down to detect collisions with terrain/water
     def setWalkingRay(self, scene):    
-        # for walking on  terrain
         self.groundRay, self.skyRay = CollisionRay(), CollisionRay()
         self.groundRay.setOrigin(0, 0, 0)
         self.skyRay.setOrigin(0, 0, 0)
         self.groundRay.setDirection(0, 0, -1)
         self.skyRay.setDirection(0, 0, 1)
-        self.groundCol = CollisionNode('rays')
+        self.groundCol = CollisionNode("groudRay")
         self.groundCol.addSolid(self.groundRay)
-        self.groundCol.addSolid(self.skyRay)
+        self.skyCol = CollisionNode("skyRay")
+        self.skyCol.addSolid(self.skyRay)
         self.groundCol.setFromCollideMask(CollideMask.bit(20))
         self.groundCol.setIntoCollideMask(CollideMask.allOff())
+        self.skyCol.setFromCollideMask(CollideMask.bit(20))
+        self.skyCol.setIntoCollideMask(CollideMask.allOff())
         self.groundNodePath = (scene.camera).attachNewNode(self.groundCol)
+        self.skyNodePath = (scene.camera).attachNewNode(self.skyCol)
         (scene.traverser).addCollider(self.groundNodePath, scene.queue)
+        (scene.traverser).addCollider(self.skyNodePath, scene.queue)
 
     ################################################################
     # Helpers for timerFired
@@ -65,23 +73,30 @@ class Player(ShowBase):
         height = collision.getSurfacePoint(scene.render).getZ()
         self.posZ = height+40
 
+    def caughtInTsunami(self, scene):
+        self.health -= 0.001
+        jerk = random.randint(1,int(scene.magnitude/10))
+        # self.posX += jerk
+        # else:
+        #     self.posY -= jerk
+
     # iterates through every collision to take care of
     def exploreMap(self, scene):
-        # set up the information
-        entries = list(scene.queue.getEntries())
-        # lambda function sorts by highest displac value
+        entries = list(scene.queue.getEntries()) # set up the information
+        # lambda function key to sort by highest displac value
         entries.sort(key=lambda x: x.getSurfacePoint(scene.render).getZ())
         if len(entries) > 0:
             for collision in entries:
                 player = str(collision.getFromNodePath())
                 into = str(collision.getIntoNodePath())
-                # print (player)
-                print ("colliding with " + into)
-                # checks to see if it's colliding with terrain
                 if scene.terrainName in into:
                     self.followTerrain(scene, collision)
-                elif "waves" in into:
-                    self.followTerrain(scene, collision)
+                    self.submerged = False
+                elif (scene.inTsunami == True and 
+                      "waves" in into and "skyRay" in player):
+                    self.submerged = True
+                    self.caughtInTsunami(scene)
+        else: self.submerged = False
         return Task.cont
 
     ################################################################
