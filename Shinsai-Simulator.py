@@ -17,6 +17,7 @@ from classes.Player import Player
 from classes.Terrain import Terrain
 from classes.Water import Water
 from classes.Background import Background
+from classes.Water import Water
 
 """ No LOD for terrain, but buildings and water definitely """
 
@@ -43,7 +44,7 @@ class MyApp(ShowBase):
         self.cameraCollided = False
 
         # Generate objects
-        self.terrain = Terrain(self, "modelIwaki")
+        self.terrain = Terrain(self, "yokohama") # insert the filename you want
         self.terrainName = self.terrain.name
         (posX, posY) = self.terrain.origin
         self.player = Player(self, posX, posY)
@@ -107,7 +108,7 @@ class MyApp(ShowBase):
 
     # debugging purposes
     def playerCollision(self, task):
-        self.traverser.showCollisions(self.render)
+        # self.traverser.showCollisions(self.render)
         return Task.cont
 
     ################################################################

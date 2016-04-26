@@ -17,10 +17,11 @@ class Terrain(ShowBase):
         self.name = name + ".egg"
         self.path = "models/terrains/"+name+"/"+self.name
         self.terrain = scene.loader.loadModel(self.path)
+        # self.coordinates = self.findGeomData()
         # Reparent the model to render.
         self.terrain.reparentTo(scene.render)
         # Apply scale and position transforms on the model.
-        self.terrain.setScale(200)
+        self.terrain.setScale(450)
         self.terrain.setPos(0, 0, 0)
         # Attributes for making city grid
         self.cityLatt = 9
@@ -38,7 +39,7 @@ class Terrain(ShowBase):
         self.origin = origin
         cityMap = self.createTown()
         self.placeBuilds(scene, cityMap, length, width, origin)
-        
+
     def placeBuilds(self, scene, cityMap, length, width, origin):
         currX = origin[0]
         for row in cityMap:
@@ -49,8 +50,6 @@ class Terrain(ShowBase):
                 elif type(cell) == list:
                     self.renderBlocks(scene, cell, length/9, 
                                       width/11, (currX, currY))
-                elif cell == -1:
-                    print ("NOTHING")
                 currY -= width
             currX -= length
 
@@ -59,22 +58,61 @@ class Terrain(ShowBase):
         for row in block:
             currY = origin[1]
             for cell in row:
+                """currZ = self.returnFitZ(currX, currY)"""
+                currZ = 100
                 if cell == 1:
-                    cell = Building(scene, "house1", currX, currY, 50)
+                    cell = Building(scene, "house1", currX, currY, currZ)
                 elif cell == 2:
-                    cell = Building(scene, "house2", currX, currY, 50)
+                    cell = Building(scene, "house2", currX, currY, currZ)
                 elif cell == 3:
-                    cell = Building(scene, "house3", currX, currY, 50)
+                    cell = Building(scene, "house3", currX, currY, currZ)
                 elif cell == 4:
-                    cell = Building(scene, "build", currX, currY, 50)
+                    cell = Building(scene, "build", currX, currY, currZ)
                 elif cell == 5:
-                    cell = Building(scene, "R", currX, currY, 50)
+                    cell = Building(scene, "R", currX, currY, currZ)
                 elif cell == 6:
-                    Building(scene, "concrete", currX, currY, 50)
+                    Building(scene, "concrete", currX, currY, currZ)
                 elif cell == 7:
-                    Building(scene, "build", currX, currY, 50)
+                    Building(scene, "build", currX, currY, currZ)
                 currY -= width
             currX -= length
+
+    # def returnFitZ(self, currX, currY):
+    #     coordList = self.coordinates
+    #     (bestX, bestY, bestZ) = (None, None, None)
+    #     bestOffset = None
+    #     for coord in coordList:
+    #         (x, y, z) = (coord[0], coord[1], coord[2])
+    #         (offsetX, offsetY) = (abs(currX - x), abs(currY - y))
+    #         totalOffset = offsetX + offsetY
+    #         if ((totalOffset < bestOffset) or (bestOffset == None) or
+    #             ((totalOffset == bestOffset) and ((offsetX < bestX) or
+    #             (offsetY < bestY)))):
+    #             (bestZ, bestOffset) = (z, totalOffset)
+    #             (bestX, bestY) = (offsetX, offsetY)
+    #     return bestZ if bestZ != None else 0
+
+    # def findGeomData(self):
+    #     dataArray = list()
+    #     geomNodeCollection = self.terrain.findAllMatches('**/+GeomNode')
+    #     for nodePath in geomNodeCollection:
+    #       geomNode = nodePath.node()
+    #       for i in range(geomNode.getNumGeoms()):
+    #         geom = geomNode.getGeom(i)
+    #         vdata = geom.getVertexData()
+    #         vertex = GeomVertexReader(vdata, 'vertex')
+    #         while not vertex.isAtEnd():
+    #             v = vertex.getData3f()
+    #             v = v*450
+    #             point = (v.getX(), v.getY(), v.getZ())
+    #             dataArray.append(point)
+    #     maxX = 0
+    #     maxY = 0
+    #     for point in dataArray:
+    #         maxX = max(maxX, point[0])
+    #         maxY = max(maxY, point[1])
+    #     print maxX, maxY
+    #     return dataArray
 
     ########################################################
     # algorithm for creating a city map
@@ -138,6 +176,7 @@ class Terrain(ShowBase):
         rowCount = 0
         for row in grid:
             row[0] = -1
+            row[1] = -1
             for index in range(1,8):
                 if index < 4: row[index] = 1
                 elif index > 4: row[index] = 2

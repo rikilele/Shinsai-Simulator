@@ -19,86 +19,53 @@ class Building(ShowBase):
         elif name == "tower": self.buildTower(scene)
         elif name == "build": self.buildBuild(scene)
 
-    def buildConcrete(self, scene):
-        building = scene.loader.loadModel("models/concrete/concrete.egg")
-        building.reparentTo(scene.render)
-        building.setScale(850)
-        building.setHpr(0,0,0)
-        building.setPos(self.posX, self.posY, self.posZ)
-        # initiate collison settings
-        box = CollisionBox(Point3(0.7, 0, 1), 1, 1, 1.25)
-        cnodePath = building.attachNewNode(CollisionNode('box'))
-        cnodePath.node().addSolid(box)
-        cnodePath.show()
-
-    def buildRBuilding(self, scene):
-        building = scene.loader.loadModel("models/r-building/r-building.egg")
-        building.reparentTo(scene.render)
-        building.setScale(850)
-        building.setHpr(0,0,0)
-        building.setPos(self.posX, self.posY, self.posZ)
-        # initiate collison settings
-        box = CollisionBox(Point3(0.5, 0, 1), 1, 1, 1.25)
-        cnodePath = building.attachNewNode(CollisionNode('box'))
-        cnodePath.node().addSolid(box)
-        cnodePath.show()
-
     def buildHouse1(self, scene):
-        building = scene.loader.loadModel("models/house/house1/house1.egg")
-        building.reparentTo(scene.render)
-        building.setScale(130)
-        building.setHpr(90,0,0)
-        building.setPos(self.posX, self.posY, self.posZ)
-        # initiate collison settings
-        box = CollisionBox(Point3(0.7, 0, 1), 1, 1, 1.25)
-        cnodePath = building.attachNewNode(CollisionNode('box'))
-        cnodePath.node().addSolid(box)
-        cnodePath.show()
+        self.building = scene.loader.loadModel("models/house/house1/house1.egg")
+        self.building.reparentTo(scene.render)
+        self.building.setScale(130)
+        self.building.setHpr(90,0,0)
+        self.building.setPos(self.posX, self.posY, self.posZ)
 
     def buildHouse2(self, scene):
-        building = scene.loader.loadModel("models/house/house2/house2.egg")
-        building.reparentTo(scene.render)
-        building.setScale(130)
-        building.setHpr(90,0,0)
-        building.setPos(self.posX, self.posY, self.posZ)
-        # initiate collison settings
-        box = CollisionBox(Point3(0.7, 0, 1), 1, 1, 1.25)
-        cnodePath = building.attachNewNode(CollisionNode('box'))
-        cnodePath.node().addSolid(box)
-        cnodePath.show()
+        self.building = scene.loader.loadModel("models/house/house2/house2.egg")
+        self.building.reparentTo(scene.render)
+        self.building.setScale(130)
+        self.building.setHpr(90,0,0)
+        self.building.setPos(self.posX, self.posY, self.posZ)
 
     def buildHouse3(self, scene):
-        building = scene.loader.loadModel("models/house/house3/house3.egg")
-        building.reparentTo(scene.render)
-        building.setScale(130)
-        building.setHpr(90,0,0)
-        building.setPos(self.posX, self.posY, self.posZ)
-        # initiate collison settings
-        box = CollisionBox(Point3(0.7, 0, 1), 1, 1, 1.25)
-        cnodePath = building.attachNewNode(CollisionNode('box'))
-        cnodePath.node().addSolid(box)
-        cnodePath.show()
+        self.building = scene.loader.loadModel("models/house/house3/house3.egg")
+        self.building.reparentTo(scene.render)
+        self.building.setScale(130)
+        self.building.setHpr(90,0,0)
+        self.building.setPos(self.posX, self.posY, self.posZ)
     
     def buildTower(self, scene):
-        building = scene.loader.loadModel("models/tower/tower.egg")
-        building.reparentTo(scene.render)
-        building.setScale(100)
-        building.setHpr(0,0,0)
-        building.setPos(self.posX, self.posY, self.posZ)
-        # initiate collison settings
-        box = CollisionBox(Point3(0.7, 0, 1), 1, 1, 1.25)
-        cnodePath = building.attachNewNode(CollisionNode('box'))
-        cnodePath.node().addSolid(box)
-        cnodePath.show()
+        self.building = scene.loader.loadModel("models/tower/tower.egg")
+        self.building.reparentTo(scene.render)
+        self.building.setScale(100)
+        self.building.setHpr(0,0,0)
+        self.building.setPos(self.posX, self.posY, self.posZ)
+
+    def buildConcrete(self, scene):
+        self.building = scene.loader.loadModel("models/concrete/concrete.egg")
+        self.building.reparentTo(scene.render)
+        self.building.setScale(850)
+        self.building.setHpr(0,0,0)
+        self.building.setPos(self.posX, self.posY, self.posZ)
+
+    def buildRBuilding(self, scene):
+        self.building = scene.loader.loadModel("models/r/r-building.egg")
+        self.building.reparentTo(scene.render)
+        self.building.setScale(850)
+        self.building.setHpr(0,0,0)
+        self.building.setPos(self.posX, self.posY, self.posZ)
+
+
 
     def buildBuild(self, scene):
-        building = scene.loader.loadModel("models/build/build.egg")
-        building.reparentTo(scene.render)
-        building.setScale(80)
-        building.setHpr(0,0,0)
-        building.setPos(self.posX, self.posY, self.posZ)
-        # initiate collison settings
-        box = CollisionBox(Point3(0.7, 0, 1), 1, 1, 1.25)
-        cnodePath = building.attachNewNode(CollisionNode('box'))
-        cnodePath.node().addSolid(box)
-        cnodePath.show()
+        self.building = scene.loader.loadModel("models/build/build.egg")
+        self.building.reparentTo(scene.render)
+        self.building.setScale(80)
+        self.building.setHpr(0,0,0)
+        self.building.setPos(self.posX, self.posY, self.posZ)

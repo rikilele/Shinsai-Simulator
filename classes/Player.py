@@ -17,7 +17,7 @@ class Player(ShowBase):
         (self.posX, self.posY, self.posZ) = (posX, posY, 100) # initial position
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
         self.gravity = 1
-        self.speed = 200 # depends on gender and age
+        self.speed = 150 # depends on gender and age
         self.keyPressed(scene) # initiates function that runs on key press
         self.timerFired(scene) # initiates function that runs on timer
         self.mouseActivity(scene) # initiates function that runs on mouse
@@ -35,7 +35,7 @@ class Player(ShowBase):
         (scene.traverser).addCollider(self.playerNodeP ,scene.queue)
 
     def setWalkingRay(self, scene):    
-        # for walkingon  terrain
+        # for walking on  terrain
         self.groundRay = CollisionRay()
         self.groundRay.setOrigin(0, 0, 0)
         self.groundRay.setDirection(0, 0, -1)
@@ -55,19 +55,12 @@ class Player(ShowBase):
         # update camera position
         scene.camera.setPos(self.posX, self.posY, self.posZ)
         scene.camera.setHpr(self.H, self.P, self.R)
-        print self.posX, self.posY, self.posZ
         # Task.cont allows the function to keep running
         return Task.cont
 
     def followTerrain(self, scene, collision):
         height = collision.getSurfacePoint(scene.render).getZ()
         self.posZ = height+50
-
-    def preventBump(self, scene, collision):
-        # newX = collision.getSurfacePoint(scene.render).getX()
-        # newY = collision.getSurfacePoint(scene.render).getX()
-        # self.posX, self.posY = newX, newY
-        pass
 
     # iterates through every collision to take care of
     def exploreMap(self, scene):
@@ -84,16 +77,11 @@ class Player(ShowBase):
                 # checks to see if it's colliding with terrain
                 if scene.terrainName in into:
                     self.followTerrain(scene, collision)
-                elif "box" in into:
-                    self.preventBump(scene, collision)
         return Task.cont
 
     ################################################################
     # Helpers for keyPressed
     ################################################################
-
-    ''' Temporary Solution.
-        A Bug exists in being able to bipass the building'''
     
     def move(self, scene):
         if scene.paused == False:
