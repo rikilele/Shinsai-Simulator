@@ -29,29 +29,19 @@ class Citizen(ShowBase):
 class MyApp(ShowBase):
 
     paused = False
+    inTsunami = False
 
     def __init__(self):
-
         self.initializeFunctions()
-
+        # Clock to keep track of time after earthquake
+        self.initializeClock()
         # Initialize collision handlers
-        self.traverser = CollisionTraverser("main")
-        base.cTrav = self.traverser # allows collision to be tested every frame
-        # self.traverser.showCollisions(render) # shows collision
-        self.queue = CollisionHandlerQueue()
-
+        self.initializeCollision()
         # Generate terrain information
-        self.terrain = Terrain(self, "yokohama") # insert the filename you want
-        self.terrainName = self.terrain.name
-        (self.posX, self.posY) = self.terrain.origin
-        (self.length, self.width, self.height) = (self.terrain.dimensions)
-        (self.maxZ, self.minZ) = self.terrain.maxZ, self.terrain.minZ
-        self.magnitude = 100
-        self.scale = self.terrain.scale
-
-        #Generate objects
+        self.initializeScene()
+        # Generate interactive objects
         self.player = Player(self, self.posX, self.posY)
-        self.water = Water(self)
+        self.tsunami = Water(self)
 
     ################################################################
     # Data Helpers
@@ -67,6 +57,25 @@ class MyApp(ShowBase):
         # Set the background color to blue
         self.win.setClearColor((0.5, 0.8, 1, 1))
         # self.createLights()
+
+    def initializeClock(self):
+        frameTime = globalClock.getFrameTime()
+        print (frameTime)
+
+
+    def initializeCollision(self):
+        self.traverser = CollisionTraverser("main")
+        base.cTrav = self.traverser # allows collision to be tested every frame
+        self.queue = CollisionHandlerQueue()
+
+    def initializeScene(self):
+        self.terrain = Terrain(self, "yokohama") # insert the filename you want
+        self.terrainName = self.terrain.name
+        (self.posX, self.posY) = self.terrain.origin
+        (self.length, self.width, self.height) = (self.terrain.dimensions)
+        (self.maxZ, self.minZ) = self.terrain.maxZ, self.terrain.minZ
+        self.magnitude = 100
+        self.scale = self.terrain.scale
 
     def makeMouseRelative(self):
         props = WindowProperties() # initates window node
@@ -114,6 +123,13 @@ class MyApp(ShowBase):
         # self.traverser.showCollisions(self.render)
         return Task.cont
 
+    def checkTime(self, task):
+        frameTime = globalClock.getFrameTime()
+        print ("time is" + str(frameTime))
+        if frameTime > 10:
+            MyApp.inTsunami = True
+        return Task.cont
+
     ################################################################
     # Event handlers
     ################################################################
@@ -125,6 +141,7 @@ class MyApp(ShowBase):
     # adds task that should be fired every second
     def timerFired(self):
         taskMgr.add(self.playerCollision, "player collision")
+        taskMgr.add(self.checkTime, "time")
 
     def mouseActivity(self):
         pass

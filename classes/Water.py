@@ -14,7 +14,14 @@ all objects rendered into the scene as part of the Tsunami must have the name
 
 class Water(ShowBase):
     def __init__(self, scene):
-        self.startSimulation(scene)
+        # checks the time so tha the Tsunami can run after a given time
+        taskMgr.add(self.checkTime, "checkTime", extraArgs=[scene])
+
+    def checkTime(self, scene):
+        if scene.inTsunami == True:
+            self.startSimulation(scene)
+            return Task.done
+        return Task.cont
 
     def startSimulation(self, scene):
         self.water = scene.loader.loadModel("models/water/waves.egg")
@@ -29,7 +36,7 @@ class Water(ShowBase):
         middlePos = (0, scene.length*1.5, 
             scene.minZ - scene.height*0.7 + scene.maxZ*(scene.magnitude)/100)
         endPos = (0, 0, 
-            scene.minZ - scene.height*0.7  + scene.maxZ*(scene.magnitude)/100)
+            scene.minZ - scene.height*0.7 + scene.maxZ*(scene.magnitude)/100)
         bringTsunami = self.water.posInterval(2,
                                               Point3(middlePos),
                                               Point3(startPos))
