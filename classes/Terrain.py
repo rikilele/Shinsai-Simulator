@@ -64,28 +64,17 @@ class Terrain(ShowBase):
             currX -= length
 
     def renderBlocks(self, scene, block, length, width, origin):
+        buildCode = {1:"house1", 2:"house2", 3:"house3", 4:"build", \
+                     5:"concrete", 6:"r", 7:"cafe", 8:"old"}
         currX = origin[0]
         for row in block:
             currY = origin[1]
             for cell in row:
                 """currZ = self.returnFitZ(currX, currY)"""
-                currZ = 100
-                if cell == 1:
-                    cell = Building(scene, "house1", currX, currY, currZ)
-                elif cell == 2:
-                    cell = Building(scene, "house2", currX, currY, currZ)
-                elif cell == 3:
-                    cell = Building(scene, "house3", currX, currY, currZ)
-                elif cell == 4:
-                    cell = Building(scene, "build", currX, currY, currZ)
-                elif cell == 5:
-                    cell = Building(scene, "concrete", currX, currY, currZ)
-                elif cell == 6:
-                    Building(scene, "r", currX, currY, currZ)
-                elif cell == 7:
-                    Building(scene, "cafe", currX, currY, currZ)
-                elif cell == 8:
-                    Building(scene, "old", currX, currY, currZ)
+                currZ = 0
+                if cell in buildCode:
+                    name = buildCode[cell]
+                    cell = Building(scene, name, currX, currY, currZ)
                 currY -= width
             currX -= length
 
@@ -159,8 +148,8 @@ class Terrain(ShowBase):
     #########################################################
     # big building = 4
     # concrete building = 5
-    # tower = 6
-    # cafe = 7 (two buildings side by side)
+    # signature building = 6
+    # cafe = 7
     # old building = 8
     #########################################################
 
