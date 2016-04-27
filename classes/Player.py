@@ -15,9 +15,9 @@ import random
 class Player(ShowBase):
     def __init__(self, scene, posX, posY):
         self.health = 1 # between 0 to 1
-        (self.posX, self.posY, self.posZ) = (posX, posY, scene.maxZ)
+        (self.posX, self.posY, self.posZ) = (posX, posY, (scene.maxZ+scene.minZ)/2)
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
-        self.speed = 150 # depends on gender and age
+        self.speed = 100 # depends on gender and age
         self.submerged = False
         self.keyPressed(scene) # initiates functions that runs on key press
         self.timerFired(scene) # initiates functions that runs on timer

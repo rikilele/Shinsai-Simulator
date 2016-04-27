@@ -40,7 +40,7 @@ class MyApp(ShowBase):
         self.initializeScene()
         # Generate interactive objects
         self.player = Player(self, self.posX, self.posY)
-        self.tsunamiTime = 5
+        self.tsunamiTime = 10
         self.tsunami = Water(self)
         # Initialize screen on text
         self.put2D()

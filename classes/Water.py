@@ -19,28 +19,31 @@ class Water(ShowBase):
 
     def checkTime(self, scene):
         if scene.inTsunami == True:
+            self.loadWaves(scene)
             self.startSimulation(scene)
             return Task.done
         return Task.cont
 
-    def startSimulation(self, scene):
-        self.water = scene.loader.loadModel("models/water/waves.egg")
+    def loadWaves(self, scene):
+        self.wave = scene.loader.loadModel("models/water/waves.egg")
         # Reparent the model to render.
-        self.water.reparentTo(scene.render)
-        self.water.setTwoSided(True) # water visible from inside
+        self.wave.reparentTo(scene.render)
+        self.wave.setTwoSided(True) # water visible from inside
         # Apply scale and position transforms on the model.
-        self.water.setScale(scene.scale+100) # so Tsunami wraps
-        self.water.setSz(scene.scale-100)
+        self.wave.setScale(scene.scale+100) # so Tsunami wraps terrain
+        self.wave.setSz(scene.scale-100)
+
+    def startSimulation(self, scene):
         startPos = (0, scene.length*2, scene.minZ-scene.height)
-        self.water.setPos(Point3(startPos))
+        self.wave.setPos(Point3(startPos))
         middlePos = (0, scene.length*1.5, 
             scene.minZ - scene.height*0.7 + scene.maxZ*(scene.magnitude)/100)
         endPos = (0, 0, 
             scene.minZ - scene.height*0.7 + scene.maxZ*(scene.magnitude)/100)
-        bringTsunami = self.water.posInterval(2,
+        bringTsunami = self.wave.posInterval(2,
                                               Point3(middlePos),
                                               Point3(startPos))
-        hitTsunami = self.water.posInterval(2, 
+        hitTsunami = self.wave.posInterval(2, 
                                             Point3(endPos), 
                                             Point3(middlePos))
         # Create and play the sequence that coordinates the intervals.
