@@ -18,6 +18,8 @@ class Building(ShowBase):
         elif name == "house3": self.buildHouse3(scene)
         elif name == "tower": self.buildTower(scene)
         elif name == "build": self.buildBuild(scene)
+        elif name == "cafe": self.buildCafe(scene)
+        elif name == "old": self.buildOld(scene)
 
     def buildHouse1(self, scene):
         self.building = scene.loader.loadModel("models/house/house1/house1.egg")
@@ -71,6 +73,22 @@ class Building(ShowBase):
         self.building = scene.loader.loadModel("models/build/build.egg")
         self.building.reparentTo(scene.render)
         self.building.setScale(80)
+        self.building.setHpr(0,0,0)
+        self.building.setPos(self.posX, self.posY, self.posZ)
+        self.building.setTwoSided(True)
+
+    def buildCafe(self, scene):
+        self.building = scene.loader.loadModel("models/cafe/cafe.egg")
+        self.building.reparentTo(scene.render)
+        self.building.setScale(40)
+        self.building.setHpr(0,0,0)
+        self.building.setPos(self.posX, self.posY, self.posZ)
+        self.building.setTwoSided(True)
+
+    def buildOld(self, scene):
+        self.building = scene.loader.loadModel("models/oldbuild/oldbuild.egg")
+        self.building.reparentTo(scene.render)
+        self.building.setScale(30)
         self.building.setHpr(0,0,0)
         self.building.setPos(self.posX, self.posY, self.posZ)
         self.building.setTwoSided(True)

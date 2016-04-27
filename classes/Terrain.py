@@ -79,11 +79,13 @@ class Terrain(ShowBase):
                 elif cell == 4:
                     cell = Building(scene, "build", currX, currY, currZ)
                 elif cell == 5:
-                    cell = Building(scene, "R", currX, currY, currZ)
+                    cell = Building(scene, "concrete", currX, currY, currZ)
                 elif cell == 6:
-                    Building(scene, "concrete", currX, currY, currZ)
+                    Building(scene, "r", currX, currY, currZ)
                 elif cell == 7:
-                    Building(scene, "build", currX, currY, currZ)
+                    Building(scene, "cafe", currX, currY, currZ)
+                elif cell == 8:
+                    Building(scene, "old", currX, currY, currZ)
                 currY -= width
             currX -= length
 
@@ -158,7 +160,8 @@ class Terrain(ShowBase):
     # big building = 4
     # concrete building = 5
     # tower = 6
-    # restaurant = 7 (two buildings side by side)
+    # cafe = 7 (two buildings side by side)
+    # old building = 8
     #########################################################
 
     # creates a grid map of a downtown area
@@ -166,9 +169,9 @@ class Terrain(ShowBase):
         grid = self.makeGrid() # initialize grid
         for start in [3,6]: # these rows have the faces of the buildings
             index = 0
-            grid[start][index] = random.randint(4,7) # 4 buildings available
-            grid[start][index+3] = random.randint(4,7)
-            grid[start][index+6] = random.randint(4,7)
+            grid[start][index] = random.randint(4,8) # 4 buildings available
+            grid[start][index+3] = random.randint(4,8)
+            grid[start][index+6] = random.randint(4,8)
         return grid
 
     #########################################################
