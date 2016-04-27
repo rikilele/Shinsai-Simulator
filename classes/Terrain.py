@@ -20,7 +20,7 @@ class Terrain(ShowBase):
         self.scale = 450
         # self.coordinates = self.findGeomData()
         # Reparent the model to render.
-        self.terrain.reparentTo(scene.render)
+        # self.terrain.reparentTo(scene.render)
         # Apply scale and position transforms on the model.
         self.terrain.setScale(self.scale)
         self.terrain.setPos(0, 0, 0)
@@ -137,7 +137,7 @@ class Terrain(ShowBase):
     # creates a grid map of a residential area
     def makeResArea(self):
         grid = self.makeGrid() # initialize grid
-        for start in range(0,7,2): # these have the faces of the houses
+        for start in range(0,7,3): # these have the faces of the houses
             index = 0
             for col in grid[start]:
                 if col == 0 and index%2 == 0: # if space is open

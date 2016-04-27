@@ -17,7 +17,7 @@ class Player(ShowBase):
         self.health = 1 # between 0 to 1
         (self.posX, self.posY, self.posZ) = (posX, posY, (scene.maxZ+scene.minZ)/2)
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
-        self.speed = 100 # depends on gender and age
+        self.speed = 50 # depends on gender and age
         self.submerged = False
         self.keyPressed(scene) # initiates functions that runs on key press
         self.timerFired(scene) # initiates functions that runs on timer
@@ -72,18 +72,18 @@ class Player(ShowBase):
 
     def followTerrain(self, scene, collision):
         height = collision.getSurfacePoint(scene.render).getZ()
-        self.posZ = height+40
+        self.posZ = height+300
 
     def caughtInTsunami(self, scene):
         self.health -= 0.001
         # displace player due to water
-        jerk = random.randint(1,int(scene.magnitude/5))
+        jerk = random.randint(1,int(scene.magnitude/10))
         if bool(random.getrandbits(1)): # randomly assign True of False
             self.posY -= jerk
         elif bool(random.getrandbits(1)):
-            self.posX += jerk
+            self.posX += jerk*3
         else:    
-            self.posX -= jerk
+            self.posX -= jerk*3
 
     # iterates through every collision to take care of
     def exploreMap(self, scene):

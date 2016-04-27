@@ -33,6 +33,35 @@ class MyApp(ShowBase):
     isOver = False
 
     def __init__(self):
+        ShowBase.__init__(self) # initializes Panda window from ShowBase
+        self.setFrameRateMeter(True)
+        self.tName = None # name of terrain
+        self.magnitude = None # magnitude of earthquake
+        self.selectOptions()
+
+    def selectOptions(self):
+        def chooseCity(arg):
+            self.tName = arg.lower()
+        def chooseMagnitude():
+            self.magnitude = slider["value"]*13
+        def moveOn():
+            # removes all menu
+            image.destroy()
+            menu.destroy()
+            slider.destroy()
+            button.destroy()
+            globalClock.reset() # initializes clock time
+            self.initSimulation()
+        self.win.setClearColor((0, 0, 0, 1)) # makes background black
+        image = OnscreenImage(image="images/hana.jpg", pos=(0.5, 0, 0))
+        menu = DirectOptionMenu(text="Model City", scale=0.08,
+            items=["Yokohama"], command=chooseCity, pos=(-1.1, 0, 0))
+        button = DirectButton(text = ("Start Simulation"), command=moveOn,
+                              scale=0.08, pos=LVecBase3f(-0.9,0,-0.8))
+        slider = DirectSlider(range=(0,10), value=5, pageSize=1, scale=0.3,
+                              pos=(-0.9, 0, -0.4),command=chooseMagnitude)
+
+    def initSimulation(self):
         self.initializeFunctions()
         # Initialize collision handlers
         self.initializeCollision()
@@ -50,7 +79,6 @@ class MyApp(ShowBase):
     ################################################################
 
     def initializeFunctions(self):
-        ShowBase.__init__(self) # initializes Panda window from ShowBase
         self.disableMouse() # disable camera control by mouse
         self.makeMouseRelative()
         self.keyPressed()
@@ -83,12 +111,12 @@ class MyApp(ShowBase):
         self.queue = CollisionHandlerQueue()
 
     def initializeScene(self):
-        self.terrain = Terrain(self, "yokohama") # insert the filename you want
+        if self.tName == None: self.tName = "yokohama"
+        self.terrain = Terrain(self, self.tName) # insert the filename you want
         self.terrainName = self.terrain.name
         (self.posX, self.posY) = self.terrain.origin
         (self.length, self.width, self.height) = (self.terrain.dimensions)
         (self.maxZ, self.minZ) = self.terrain.maxZ, self.terrain.minZ
-        self.magnitude = 100
         self.scale = self.terrain.scale
 
     def makeMouseRelative(self):

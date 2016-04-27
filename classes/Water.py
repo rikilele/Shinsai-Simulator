@@ -40,10 +40,10 @@ class Water(ShowBase):
             scene.minZ - scene.height*0.7 + scene.maxZ*(scene.magnitude)/100)
         endPos = (0, 0, 
             scene.minZ - scene.height*0.7 + scene.maxZ*(scene.magnitude)/100)
-        bringTsunami = self.wave.posInterval(2,
+        bringTsunami = self.wave.posInterval(10,
                                               Point3(middlePos),
                                               Point3(startPos))
-        hitTsunami = self.wave.posInterval(2, 
+        hitTsunami = self.wave.posInterval(180, 
                                             Point3(endPos), 
                                             Point3(middlePos))
         # Create and play the sequence that coordinates the intervals.

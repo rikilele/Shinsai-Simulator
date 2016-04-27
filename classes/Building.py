@@ -12,9 +12,9 @@ class Building(ShowBase):
         self.posY = posY
         self.posZ = posZ
         self.buildInfo = {\
-        "house1"   :("models/house/house1/house1.egg", 130),
-        "house2"   :("models/house/house2/house2.egg", 130),
-        "house3"   :("models/house/house3/house3.egg", 130),
+        "house1"   :("models/house/house1/house1.egg", 180),
+        "house2"   :("models/house/house2/house2.egg", 180),
+        "house3"   :("models/house/house3/house3.egg", 180),
         "build"    :("models/build/build.egg",          80),
         "concrete" :("models/concrete/concrete.egg",   850),
         "r"        :("models/r/r.egg",                 150),
