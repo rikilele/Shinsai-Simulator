@@ -17,7 +17,7 @@ class Player(ShowBase):
         self.health = 1 # between 0 to 1
         (self.posX, self.posY, self.posZ) = (posX, posY, -100)
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
-        self.speed = 6000 # depends on gender and age
+        self.speed = 2000 # depends on gender and age
         self.submerged = False
         self.keyPressed(scene) # initiates functions that runs on key press
         self.timerFired(scene) # initiates functions that runs on timer
