@@ -3,7 +3,7 @@
 created by Riki Singh Khorana (rkhorana + MM)
 
 This project is a simulator of a situation where an earthquake has hit a model 
-city, and there is a need for evacuation because of a tsunami. The project features timers counting up from when the earthquake has last stopped (so that you can walk properly), a Tsunami that quickly errodes your "health", and a randomly generated city placed on a terrain modelled from a real life town.
+city, and there is a need for evacuation because of a tsunami. The project features timers counting up from when the earthquake has last stopped (so that you can walk properly), a Tsunami that quickly erodes your "health", and a randomly generated city placed on a terrain modeled from a real life town.
 
 As this project utilizes the Panda3D library, you will need to install the library from this website updated and maintained by Carnegie Mellon.
 ---> http://www.panda3d.org/download.php

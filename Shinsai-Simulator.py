@@ -144,10 +144,9 @@ class MyApp(ShowBase):
         self.timerFired()
         self.mouseActivity()
         # Set the background color to blue
-        self.win.setClearColor((0.45, 0.75, 1, 1))
+        self.win.setClearColor((0.5, 0.8, 1, 1))
 
     def put2D(self):
-        # This code was taken and adapted from samples/ball-in-maze.py
         self.instructions = \
             OnscreenText(text="Use WASD keys to move \
                              \nUse mouse to look around\
@@ -208,6 +207,7 @@ class MyApp(ShowBase):
     # debugging purposes
     def playerCollision(self, task):
         # self.traverser.showCollisions(self.render)
+        # should be called when debugging
         return Task.cont
 
     # checks for the time of the tsunami
@@ -232,7 +232,7 @@ class MyApp(ShowBase):
         OnscreenText(text="%d:%d%d" % (time//60, time//1%60//10,time//1%60%10),
                     parent=base.a2dBottomRight, align=TextNode.ARight, fg=color, 
                     pos=(-0.2, 0.22), scale=0.15, shadow=(0, 0, 0, 1))  
-        self.healthBar = DirectWaitBar(text="Health", value=self.player.health, 
+        self.healthBar = DirectWaitBar(text="Stamina", value=self.player.health, 
                                        scale=0.6, pos=(0,.4,-0.74), range=1)
         if self.player.submerged == True:
             self.waterEffect = \

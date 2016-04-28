@@ -1,0 +1,31 @@
+15-112 S16 Term Project
+"Shinsai-Simulator"
+created by Riki Singh Khorana (rkhorana + MM)
+
+*****************************************************
+
+Project Overview:
+
+The goal of my project is to have a realistic evacuation simulator in the case of a tsunami, based off of a real world terrain. The problem that I see unsolved (as explained in deliverable1/proposal.txt) is that many people are aware, but unprepared of the rapid decision making that has to go on during emergency situations. Therefore, I sought to create a simulator that will be as close to the real-life experience when a tsunami happens.
+
+*****************************************************
+
+General Approach (UI/UX):
+
+I have based a lot of my UI during the simulator off of Minecraft. This is because I thought that Minecraft has achieved a significant reputation for being a very realistic sandbox software. The method for looking around the world and moving was implemented on the idea of mimicking Minecraft. The health bar is similar, however I wanted to emphasize the fact that health in real-life is not discrete but continuous. I initially planned to have all the buildings interact with each other and the waves, which other softwares did not implement. I soon found out that the issue with this is that dynamically changing each of the building’s positions and calculating collisions would be way too much work for the Panda3D loop to perform optimally.
+
+*****************************************************
+
+General Approach (Code):
+
+The algorithm for walking on the terrain required “collision objects” to be created within Panda3D. I would basically attach transparent objects that represented each entity, and would test if those objects overlapped each other. This allowed me to create a ray pointing downwards onto the terrain, and effectively retrieve the z-axis information to replace myself.
+
+The tsunami height was calculated by the selected terrain size and magnitude of the earthquake, both of which could be initiated in the menu screen.
+
+The procedure in placing buildings on the terrain was a bit more tedious as Panda3D did not give me any meaningful methods to read the information. What I did was to implement a terrainReader.py, which would trace the terrain using a camera and the traced object, and retrieving the z-data by the method explained above. The information was stored in a Python dictionary, where the (x, y) coordinate tuple was the key to the z-axis data. This was surprisingly inefficient (took 1.5 hours to scan the whole terrain, and the resulting dictionary was >25MB), but retrieving information from the dictionary was extremely fast, thanks to O(1)!
+
+There was a bug that the frame rate would decrease to 30fps, which is actually not that bad, but considering my average frame rate to be 60fps, was significant. This affected the speed of the player, since each frame, the player’s position would be updated. Although this could have been solved using methods of occlusion culling, Panda3D did not seem to support a fully functional version of this. Therefore I decided to simply retrieve the fps information and take the inverse of it to multiply with my modified displacement factor (the slower the frame rate, the bigger the displacement of player —> virtually same speed every frame).
+
+*****************************************************
+
+The main take away from this project that I found was that “dictionaries are friends”.

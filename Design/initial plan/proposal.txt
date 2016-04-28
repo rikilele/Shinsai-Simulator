@@ -1,0 +1,21 @@
+Project Proposal
+Riki Singh Khorana + rkhorana + MM
+
+The tentative title of my project is "Shinsai Simulator", where "Shinsai" is the
+Japanese word for earthquake disaster. Below is a basic explanation of what I plan to shape my project into, and how I will do it.
+
+My project will be a 3D simulator of such an event, where the user will have to
+evacuate to a safe spot within a 3D generated world based off an existing city.
+Possible obstacles include tsunamis, broken glasses, and crowd bottlenecks.
+
+The specific problem I intend to solve is the lack of credible simulations for 
+these situations. As I come from Japan, I have personally learned a lot from the experience of the 3.11 disaster. However, I am still not fully prepared for such scenarios, because I still haven't witnessed the devastation myself. I still feel 
+like these disasters are "unreal" somewhere deep in my heart. This should not be
+the case, and people have to have a realistic plan for realistic scenarios. This is why I believe that a realistic simulation of these stituations is something that 
+needs to be developed and distributed urgently. Seeing tsunamis destroying your very own house in a virtual world will bring shock, but also awareness.
+
+In order to implement this program with a degree of realism, I have decided to make use of Panda 3D to create a virtual world. With the use of additional softwares such as SketchUp, Google Earth, and Blender, terrains from the real world can be rendered into my program. I will be able to generate building-like objects onto my terrain, which will helpfully map the real world in a virtual world. The orientations of the buildings shall be affected by each other dynamically, as many buildings collapse and/or are destroyed by various aftershocks of an earthquake.
+
+I plan to make use of research on equations of waves, so the tsunami in the program will act similar to what it would be like in a real world. Basic physics on forces will also be applied so that buildings can be displaced by waves, and the player can be "wounded", likely affecting their travel speed and such. Initial settings would probably be edited by the user on a tkinter UI, however I am also searching to make use of 2D graphics in Panda3D. 
+
+This project is very meaningful to me, and I hope to achieve something great that could potentially be used by many people to prevent panic and confusion during unexpected scenarios of a natural disaster.
