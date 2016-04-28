@@ -1,4 +1,4 @@
-from database.Coordinates import Coordinates
+from Coordinates import Coordinates
 
 class ZInfo(object):
     def __init__(self, name):

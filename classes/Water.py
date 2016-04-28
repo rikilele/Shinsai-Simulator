@@ -2,10 +2,8 @@
 # importing panda3d modules and classes
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
-from direct.actor.Actor import Actor
 from direct.interval.IntervalGlobal import Sequence
 from panda3d.core import *
-from pandac.PandaModules import WindowProperties
 
 """
 all objects rendered into the scene as part of the Tsunami must have the name

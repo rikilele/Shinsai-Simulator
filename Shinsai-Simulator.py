@@ -4,7 +4,6 @@
 # importing panda3d modules and classes
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
-from direct.interval.IntervalGlobal import Sequence
 from direct.gui.DirectGui import *
 from panda3d.core import *
 from pandac.PandaModules import WindowProperties

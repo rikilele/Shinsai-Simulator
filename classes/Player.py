@@ -1,9 +1,7 @@
 # importing panda3d modules and classes
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
-from direct.actor.Actor import Actor
 from panda3d.core import *
-from pandac.PandaModules import WindowProperties
 
 # importing modules for calculations
 from math import sin, cos, pi
@@ -17,7 +15,7 @@ class Player(ShowBase):
         self.health = 1 # between 0 to 1
         (self.posX, self.posY, self.posZ) = (posX-1000, posY-1200, 0)
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
-        self.speed = 2000 # depends on gender and age
+        self.speed = 1000 # depends on gender and age
         self.submerged = False
         self.keyPressed(scene) # initiates functions that runs on key press
         self.timerFired(scene) # initiates functions that runs on timer

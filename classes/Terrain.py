@@ -2,16 +2,14 @@
 # importing panda3d modules and classes
 from direct.showbase.ShowBase import ShowBase
 from direct.task import Task
-from direct.actor.Actor import Actor
 from panda3d.core import *
-from pandac.PandaModules import WindowProperties
 
 # import additional modules
 import random
 
 # from same directory
 from Building import Building
-from ZInfo import ZInfo
+from database.ZInfo import ZInfo
 
 class Terrain(ShowBase):
     def __init__(self, scene, name):
@@ -171,4 +169,3 @@ class Terrain(ShowBase):
                 elif block == 2:
                     grid[row][col] = self.makeResArea()
         return grid
-         
