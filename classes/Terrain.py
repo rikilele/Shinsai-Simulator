@@ -11,6 +11,7 @@ import random
 
 # from same directory
 from Building import Building
+from ZInfo import ZInfo
 
 class Terrain(ShowBase):
     def __init__(self, scene, name):
@@ -18,17 +19,21 @@ class Terrain(ShowBase):
         self.path = "models/terrains/"+name+"/"+self.name
         self.terrain = scene.loader.loadModel(self.path)
         self.scale = 450
-        # self.coordinates = self.findGeomData()
         # Reparent the model to render.
-        # self.terrain.reparentTo(scene.render)
+        self.terrain.reparentTo(scene.render)
         # Apply scale and position transforms on the model.
         self.terrain.setScale(self.scale)
         self.terrain.setPos(0, 0, 0)
         # Attributes for making city grid
         self.cityLatt = 9
         self.cityLong = 11
+        self.initializeZData()
         self.buildBuildings(scene) # place all the buildings
         self.placeNorth(scene) # places a "North" reference point
+
+    def initializeZData(self):
+        data = ZInfo(self.name)
+        self.zData = data.newDict
 
     def placeNorth(self, scene):
         self.north = Building(scene, "tower", -10**5, -10**15, 10**3)
@@ -66,54 +71,19 @@ class Terrain(ShowBase):
     def renderBlocks(self, scene, block, length, width, origin):
         buildCode = {1:"house1", 2:"house2", 3:"house3", 4:"build", \
                      5:"concrete", 6:"r", 7:"cafe", 8:"old"}
-        currX = origin[0]
+        currX = origin[0] # resets data so to fit key to ZData
         for row in block:
-            currY = origin[1]
+            currY = origin[1] # resets data to fit key to ZData
             for cell in row:
-                """currZ = self.returnFitZ(currX, currY)"""
-                currZ = 0
+                try: # try to read z-value from database
+                    (x, y) = (int(currX//100*100)-400, int(currY//100*100))
+                    currZ = self.zData[(x, y)]
+                except: continue
                 if cell in buildCode:
                     name = buildCode[cell]
                     cell = Building(scene, name, currX, currY, currZ)
                 currY -= width
             currX -= length
-
-    # def returnFitZ(self, currX, currY):
-    #     coordList = self.coordinates
-    #     (bestX, bestY, bestZ) = (None, None, None)
-    #     bestOffset = None
-    #     for coord in coordList:
-    #         (x, y, z) = (coord[0], coord[1], coord[2])
-    #         (offsetX, offsetY) = (abs(currX - x), abs(currY - y))
-    #         totalOffset = offsetX + offsetY
-    #         if ((totalOffset < bestOffset) or (bestOffset == None) or
-    #             ((totalOffset == bestOffset) and ((offsetX < bestX) or
-    #             (offsetY < bestY)))):
-    #             (bestZ, bestOffset) = (z, totalOffset)
-    #             (bestX, bestY) = (offsetX, offsetY)
-    #     return bestZ if bestZ != None else 0
-
-    # def findGeomData(self):
-    #     dataArray = list()
-    #     geomNodeCollection = self.terrain.findAllMatches('**/+GeomNode')
-    #     for nodePath in geomNodeCollection:
-    #       geomNode = nodePath.node()
-    #       for i in range(geomNode.getNumGeoms()):
-    #         geom = geomNode.getGeom(i)
-    #         vdata = geom.getVertexData()
-    #         vertex = GeomVertexReader(vdata, 'vertex')
-    #         while not vertex.isAtEnd():
-    #             v = vertex.getData3f()
-    #             v = v*450
-    #             point = (v.getX(), v.getY(), v.getZ())
-    #             dataArray.append(point)
-    #     maxX = 0
-    #     maxY = 0
-    #     for point in dataArray:
-    #         maxX = max(maxX, point[0])
-    #         maxY = max(maxY, point[1])
-    #     print maxX, maxY
-    #     return dataArray
 
     ########################################################
     # algorithm for creating a city map
@@ -170,7 +140,7 @@ class Terrain(ShowBase):
     # residential area = 2
     #########################################################
 
-    # creates grid consisting of open, residential, and downtown area assignment
+    # creates grid consist of open, residential, and downtown area assignment
     def makeTownGrid(self):
         grid = self.makeGrid(self.cityLatt, self.cityLong)
         (numRows, numCols) = (len(grid), len(grid[0]))

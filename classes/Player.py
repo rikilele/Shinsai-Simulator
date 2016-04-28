@@ -15,9 +15,9 @@ import random
 class Player(ShowBase):
     def __init__(self, scene, posX, posY):
         self.health = 1 # between 0 to 1
-        (self.posX, self.posY, self.posZ) = (posX, posY, (scene.maxZ+scene.minZ)/2)
+        (self.posX, self.posY, self.posZ) = (posX, posY, -100)
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
-        self.speed = 50 # depends on gender and age
+        self.speed = 6000 # depends on gender and age
         self.submerged = False
         self.keyPressed(scene) # initiates functions that runs on key press
         self.timerFired(scene) # initiates functions that runs on timer
@@ -32,10 +32,11 @@ class Player(ShowBase):
     # adds barrier to collide with buildings
     def setCollisionArea(self, scene):
         self.barrier = CollisionSphere(0, 0, 0, 120)
-        self.playerNodeP = (scene.camera).attachNewNode(CollisionNode('barrier'))
-        self.playerNodeP.node().addSolid(self.barrier)
+        self.playerNP = (scene.camera).attachNewNode(CollisionNode('barrier'))
+        self.playerNP.node().addSolid(self.barrier)
+        self.playerNP.node().setIntoCollideMask(CollideMask.allOff())
         # add to traverser
-        (scene.traverser).addCollider(self.playerNodeP ,scene.queue)
+        (scene.traverser).addCollider(self.playerNP ,scene.queue)
 
     # adds ray that points up & down to detect collisions with terrain/water
     def setWalkingRay(self, scene):    
@@ -111,7 +112,9 @@ class Player(ShowBase):
     def move(self, scene):
         if scene.paused == False:
             isDown = base.mouseWatcherNode.is_button_down
-            magnitude = self.speed*self.health # speed depends on health
+            # speed depends on health and frame rate
+            frameRate = globalClock.getNetFrameRate()
+            magnitude = self.speed*self.health*(1/frameRate)
             radians = self.H * (pi/180)
             if isDown("w"): # forwards
                 self.posX += magnitude*-sin(radians)

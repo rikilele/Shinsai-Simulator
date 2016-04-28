@@ -34,7 +34,6 @@ class MyApp(ShowBase):
 
     def __init__(self):
         ShowBase.__init__(self) # initializes Panda window from ShowBase
-        self.setFrameRateMeter(True)
         self.tName = None # name of terrain
         self.magnitude = None # magnitude of earthquake
         self.selectOptions()
