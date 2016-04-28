@@ -34,31 +34,98 @@ class MyApp(ShowBase):
 
     def __init__(self):
         ShowBase.__init__(self) # initializes Panda window from ShowBase
+
+        # change window name from "panda" to app name
+        properties = WindowProperties()
+        properties.setTitle("Shinsai-Simulator")
+        base.win.requestProperties(properties)
+        # base.setFrameRateMeter(True)
+
         self.tName = None # name of terrain
         self.magnitude = None # magnitude of earthquake
-        self.selectOptions()
+        self.titleScreen()
 
-    def selectOptions(self):
-        def chooseCity(arg):
-            self.tName = arg.lower()
-        def chooseMagnitude():
-            self.magnitude = slider["value"]*13
-        def moveOn():
-            # removes all menu
-            image.destroy()
-            menu.destroy()
-            slider.destroy()
-            button.destroy()
-            globalClock.reset() # initializes clock time
-            self.initSimulation()
+    ################################################################
+    # Menu Screen functions
+    ################################################################
+
+    # this is the buffer for all screen in the menu
+    def moveScreens(self, name):
+            # removes all menu elements
+            if name=="start":
+                globalClock.reset()
+                self.initSimulation()
+            elif name=="help":
+                self.helpScreen()
+            elif name=="title":
+                self.titleScreen()
+            elif name=="select":
+                self.selectScreen()
+
+    # this is the main title screen
+    def titleScreen(self):
+        def moveOn(name):
+            for element in screen:
+                element.destroy()
+            self.moveScreens(name)
         self.win.setClearColor((0, 0, 0, 1)) # makes background black
-        image = OnscreenImage(image="images/hana.jpg", pos=(0.5, 0, 0))
+        image = OnscreenImage(image="images/title.png", pos=(0, 0, 0), 
+                              scale=(1.3,1,1.1))
+        start = DirectButton(text = ("Continue to simulation"), command=moveOn,
+                             scale=0.08, pos=LVecBase3f(0,0,-0.1), 
+                             extraArgs=["select"])
+        helper = DirectButton(text = ("Help"), command=moveOn,
+                              scale=0.08, pos=LVecBase3f(0,0,-0.3), 
+                              extraArgs=["help"])
+        screen = [image, start, helper]
+
+    # this screen will allow you to select the situation
+    def selectScreen(self):
+        def chooseMagnitude(): self.magnitude = slider["value"]*17
+        def moveOn(name):
+            for element in screen: element.destroy()
+            self.moveScreens(name)
+        image = OnscreenImage(image="images/select.png", pos=(0, 0, 0), 
+                              scale=(1.3,1,1.1))
         menu = DirectOptionMenu(text="Model City", scale=0.08,
-            items=["Yokohama"], command=chooseCity, pos=(-1.1, 0, 0))
-        button = DirectButton(text = ("Start Simulation"), command=moveOn,
-                              scale=0.08, pos=LVecBase3f(-0.9,0,-0.8))
-        slider = DirectSlider(range=(0,10), value=5, pageSize=1, scale=0.3,
-                              pos=(-0.9, 0, -0.4),command=chooseMagnitude)
+                                items=["Yokohama"], command=self.chooseCity, 
+                                pos=(-0.2, 0, -0.08))
+        startButton = DirectButton(text = ("Start Simulation"), command=moveOn,
+                                   scale=0.08, pos=LVecBase3f(0,0,-0.7), 
+                                   extraArgs=["start"])
+        backButton = DirectButton(text = ("Title"), command=moveOn,
+                                  scale=0.08, pos=LVecBase3f(-0.8,0,-0.7), 
+                                  extraArgs=["title"])
+        helpButton = DirectButton(text = ("Help"), command=moveOn,
+                                  scale=0.08, pos=LVecBase3f(0.8,0,-0.7), 
+                                  extraArgs=["help"])
+        slider = DirectSlider(range=(6,7), value=6.5, pageSize=0.1, scale=0.3,
+                              pos=(0, 0, -0.4),command=chooseMagnitude)
+        screen = [image, menu, startButton, helpButton, backButton, slider]
+
+    # contains information for help
+    def helpScreen(self):
+        def moveOn(name):
+            for element in screen:
+                element.destroy()
+            self.moveScreens(name)
+        image = OnscreenImage(image="images/help.png", 
+                              pos=(0, 0, -0.15), scale=(1.3,1,1.2))
+        backButton = DirectButton(text = ("Title"), command=moveOn, scale=0.07, 
+                                  pos=LVecBase3f(-0.5,0,-0.93), 
+                                  extraArgs=["title"])
+        continueButton = DirectButton(text = ("Continue to simulation"), 
+                                      command=moveOn, scale=0.07, 
+                                      pos=LVecBase3f(0.2,0,-0.93), 
+                                      extraArgs=["select"])
+        screen = [image, backButton, continueButton]
+
+    def chooseCity(self, arg): 
+        self.tName = arg.lower()
+
+    ################################################################
+    # Real Init Function
+    ################################################################
 
     def initSimulation(self):
         self.initializeFunctions()
@@ -68,7 +135,7 @@ class MyApp(ShowBase):
         self.initializeScene()
         # Generate interactive objects
         self.player = Player(self, self.posX, self.posY)
-        self.tsunamiTime = 10
+        self.tsunamiTime = 30
         self.tsunami = Water(self)
         # Initialize screen on text
         self.put2D()

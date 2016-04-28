@@ -171,4 +171,4 @@ class Terrain(ShowBase):
                 elif block == 2:
                     grid[row][col] = self.makeResArea()
         return grid
-            
+         
