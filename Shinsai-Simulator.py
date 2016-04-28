@@ -31,6 +31,7 @@ class MyApp(ShowBase):
     paused = False
     inTsunami = False
     isOver = False
+    number = 1
 
     def __init__(self):
         ShowBase.__init__(self) # initializes Panda window from ShowBase
@@ -39,6 +40,9 @@ class MyApp(ShowBase):
         properties = WindowProperties()
         properties.setTitle("Shinsai-Simulator")
         base.win.requestProperties(properties)
+        binManager = CullBinManager.getGlobalPtr()
+        binManager.addBin("ftb", CullBinManager.BTFrontToBack, 1)
+        print binManager.getBins()
         # base.setFrameRateMeter(True)
 
         self.tName = None # name of terrain

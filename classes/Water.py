@@ -32,6 +32,7 @@ class Water(ShowBase):
         # Apply scale and position transforms on the model.
         self.wave.setScale(scene.scale+100) # so Tsunami wraps terrain
         self.wave.setSz(scene.scale-100)
+        self.wave.setBin("ftb", 0) # draws tsunami after closer buildings
 
     def startSimulation(self, scene):
         startPos = (0, scene.length*2, scene.minZ-scene.height)
@@ -43,10 +44,11 @@ class Water(ShowBase):
         bringTsunami = self.wave.posInterval(10,
                                               Point3(middlePos),
                                               Point3(startPos))
-        hitTsunami = self.wave.posInterval(180, 
+        hitTsunami = self.wave.posInterval(120, 
                                             Point3(endPos), 
                                             Point3(middlePos))
         # Create and play the sequence that coordinates the intervals.
         simulation = Sequence(bringTsunami, hitTsunami, name="simulation")
         simulation.start()
         print ("released Tsunami")
+        print ("loaded %d objects" % (scene.number))

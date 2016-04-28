@@ -32,4 +32,5 @@ class Building(ShowBase):
         self.building.setHpr(90,0,0)
         self.building.setPos(self.posX, self.posY, self.posZ)
         self.building.setTwoSided(True)
-        
+        self.building.setBin("ftb", scene.number) # draw closer objects first
+        scene.number += 1

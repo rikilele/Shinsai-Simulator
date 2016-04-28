@@ -164,4 +164,3 @@ class Player(ShowBase):
 
     def mouseActivity(self, scene):
         taskMgr.add(self.lookAround, "look Around", extraArgs=[scene])
-        
