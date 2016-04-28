@@ -16,15 +16,6 @@ import sys
 from classes.Player import Player
 from classes.Terrain import Terrain
 from classes.Water import Water
-from classes.Background import Background
-from classes.Water import Water
-
-""" 
-Note:
-The Tsunami scale is measured in magnitudes 0.0 ~ 10.0
-In this program, the inputed magnitude will be converted to a value 0 ~ 100
-This will determine the height of the Tsunami
-"""
 
 class MyApp(ShowBase):
 
@@ -35,16 +26,14 @@ class MyApp(ShowBase):
 
     def __init__(self):
         ShowBase.__init__(self) # initializes Panda window from ShowBase
-
         # change window name from "panda" to app name
         properties = WindowProperties()
         properties.setTitle("Shinsai-Simulator")
         base.win.requestProperties(properties)
+        # adds algorithm to render closer objects first
         binManager = CullBinManager.getGlobalPtr()
         binManager.addBin("ftb", CullBinManager.BTFrontToBack, 1)
-        print binManager.getBins()
-        # base.setFrameRateMeter(True)
-
+        base.setFrameRateMeter(True)
         self.tName = None # name of terrain
         self.magnitude = None # magnitude of earthquake
         self.titleScreen()
@@ -155,7 +144,7 @@ class MyApp(ShowBase):
         self.timerFired()
         self.mouseActivity()
         # Set the background color to blue
-        self.win.setClearColor((0.5, 0.8, 1, 1))
+        self.win.setClearColor((0.45, 0.75, 1, 1))
 
     def put2D(self):
         # This code was taken and adapted from samples/ball-in-maze.py
@@ -181,7 +170,7 @@ class MyApp(ShowBase):
         self.queue = CollisionHandlerQueue()
 
     def initializeScene(self):
-        if self.tName == None: self.tName = "yokohama"
+        if self.tName == None: self.tName = "yokohama" # initialize
         self.terrain = Terrain(self, self.tName) # insert the filename you want
         self.terrainName = self.terrain.name
         (self.posX, self.posY) = self.terrain.origin

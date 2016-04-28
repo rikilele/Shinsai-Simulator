@@ -44,7 +44,7 @@ class Water(ShowBase):
         bringTsunami = self.wave.posInterval(10,
                                               Point3(middlePos),
                                               Point3(startPos))
-        hitTsunami = self.wave.posInterval(120, 
+        hitTsunami = self.wave.posInterval(100, 
                                             Point3(endPos), 
                                             Point3(middlePos))
         # Create and play the sequence that coordinates the intervals.

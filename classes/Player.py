@@ -15,7 +15,7 @@ import random
 class Player(ShowBase):
     def __init__(self, scene, posX, posY):
         self.health = 1 # between 0 to 1
-        (self.posX, self.posY, self.posZ) = (posX, posY, -100)
+        (self.posX, self.posY, self.posZ) = (posX-1000, posY-1200, 0)
         (self.H, self.P, self.R) = (0, 0, 0) # initial HPR
         self.speed = 1000 # depends on gender and age
         self.submerged = False
