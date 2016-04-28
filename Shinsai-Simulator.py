@@ -33,7 +33,7 @@ class MyApp(ShowBase):
         # adds algorithm to render closer objects first
         binManager = CullBinManager.getGlobalPtr()
         binManager.addBin("ftb", CullBinManager.BTFrontToBack, 1)
-        base.setFrameRateMeter(True)
+        # base.setFrameRateMeter(True)
         self.tName = None # name of terrain
         self.magnitude = None # magnitude of earthquake
         self.titleScreen()
