@@ -33,8 +33,8 @@ alt="IMAGE ALT TEXT HERE" width="540" height="405" border="0" /></a>
 Although this project is only an entry-level one, there are many features that I haven't implemented yet, and plan to do so in the near future.
 
 * City generator
-⋅⋅* Currently, the buildings in the cities are generated randomly, but the city blocks aren't
-⋅⋅* I would like to add an option to place blocks on the terrain on your own
+  * Currently, the buildings in the cities are generated randomly, but the city blocks aren't
+  * I would like to add an option to place blocks on the terrain on your own
 
 
 * Building Collision
