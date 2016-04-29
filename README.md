@@ -28,7 +28,7 @@ The main app controls are gone over in the video below:
 " target="_blank"><img src="http://img.youtube.com/vi/ns1BbU5z5jE/0.jpg" 
 alt="IMAGE ALT TEXT HERE" width="540" height="405" border="0" /></a>
 
-### Updates to come
+### Future Updates
 Although this project is only an entry-level one, there are many features that I haven't implemented yet, and plan to do so in the near future.
 
 * City generator
@@ -37,15 +37,15 @@ Although this project is only an entry-level one, there are many features that I
 
 
 * Building Collision
-⋅⋅* The built in Panda3D collision system did not work well with my method of exploring through the terrain
-⋅⋅* I would like to investigate further in object collision methods so the player wouldn't be cheating through the buildings
+  * The built in Panda3D collision system did not work well with my method of exploring through the terrain
+  * I would like to investigate further in object collision methods so the player wouldn't be cheating through the buildings
 
 * Obstacles
-⋅⋅* Randomly generating obstacles, or having buildings fallen over is a possibility in real-life situations
-⋅⋅* I would like to continue writing more classes and having them being randomly generated on the terrain.
+  * Randomly generating obstacles, or having buildings fallen over is a possibility in real-life situations
+  * I would like to continue writing more classes and having them being randomly generated on the terrain.
 
-### For Advanced Developers_
-It would be great if someone can take this project and idea to the next level. Things I've imagined but could not build into my projects were things such as:
+### Note to Advanced Developers
+It would be great if someone can take this project and bring to the next level. Things I've imagined but could not build into my projects were things such as:
 
 * Implementing complex wave equations in order to generate a better tsunami model
 * Working with Google Earth to use their wonderful model of our earth (They only share terrain info... boo)
