@@ -1,7 +1,6 @@
 # Shinsai-Simulator
 
 Term Project for 15-112 at Carnegie Mellon University.
-
 Created by Riki Singh Khorana
 
 ### Purpose
@@ -27,5 +26,5 @@ The main app controls are gone over in the video below:
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=ns1BbU5z5jE
 " target="_blank"><img src="http://img.youtube.com/vi/ns1BbU5z5jE/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
+alt="IMAGE ALT TEXT HERE" width="360" height="270" border="0" /></a>
 
