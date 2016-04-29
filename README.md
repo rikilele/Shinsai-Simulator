@@ -1,6 +1,7 @@
 # Shinsai-Simulator
 
 Term Project for 15-112 at Carnegie Mellon University.
+
 Created by Riki Singh Khorana
 
 ### Purpose
@@ -15,7 +16,7 @@ This app utilizes the Panda3D framework maintained by Carnegie Mellon University
 
 Once Panda3D is downloaded, locate your Shinsai-Simulator folder via the Command Line.
 
-`cd exampleFolder1/exampleFolder2/exampleFolder3/Shinsai-Simulator`
+`cd exampleDirectory/exampleFolder1/exampleFolder2/Shinsai-Simulator`
 
 Then type in:
 
