@@ -27,5 +27,5 @@ The main app controls are gone over in the video below:
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=ns1BbU5z5jE
 " target="_blank"><img src="http://img.youtube.com/vi/ns1BbU5z5jE/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="360" height="270" border="0" /></a>
+alt="IMAGE ALT TEXT HERE" width="540" height="405" border="0" /></a>
 
