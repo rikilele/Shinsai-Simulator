@@ -1,7 +1,6 @@
 # Shinsai-Simulator
 
 Term Project for 15-112 at Carnegie Mellon University.
-
 Created by Riki Singh Khorana
 
 ### Purpose
@@ -29,3 +28,29 @@ The main app controls are gone over in the video below:
 " target="_blank"><img src="http://img.youtube.com/vi/ns1BbU5z5jE/0.jpg" 
 alt="IMAGE ALT TEXT HERE" width="540" height="405" border="0" /></a>
 
+### Updates to come
+Although this project is only an entry-level one, there are many features that I haven't implemented yet, and plan to do so in the near future.
+
+* City generator
+⋅⋅* Currently, the buildings in the cities are generated randomly, but the city blocks aren't
+⋅⋅* I would like to add an option to place blocks on the terrain on your own
+
+
+* Building Collision
+⋅⋅* The built in Panda3D collision system did not work well with my method of exploring through the terrain
+⋅⋅* I would like to investigate further in object collision methods so the player wouldn't be cheating through the buildings
+
+* Obstacles
+⋅⋅* Randomly generating obstacles, or having buildings fallen over is a possibility in real-life situations
+⋅⋅* I would like to continue writing more classes and having them being randomly generated on the terrain.
+
+### For Advanced Developers_
+It would be great if someone can take this project and idea to the next level. Things I've imagined but could not build into my projects were things such as:
+
+* Implementing complex wave equations in order to generate a better tsunami model
+* Working with Google Earth to use their wonderful model of our earth (They only share terrain info... boo)
+* Having an inventories option, so decision making on what to bring is also simulated
+* Many more...!
+
+I am open to answering any questions and/or comments regarding my code and ideas.
+Please do not hesitate to contact me via my email adress: rkhorana@andrew.cmu.edu
