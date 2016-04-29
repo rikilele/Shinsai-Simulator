@@ -1,6 +1,7 @@
 # Shinsai-Simulator
 
 Term Project for 15-112 at Carnegie Mellon University.
+
 Created by Riki Singh Khorana
 
 ### Purpose
