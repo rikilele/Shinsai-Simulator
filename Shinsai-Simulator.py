@@ -127,7 +127,7 @@ class MyApp(ShowBase):
         self.initializeScene()
         # Generate interactive objects
         self.player = Player(self, self.posX, self.posY)
-        self.tsunamiTime = 30
+        self.tsunamiTime = 150 # time for tsunami to hit the coast
         self.tsunami = Water(self)
         # Initialize screen on text
         self.put2D()
@@ -145,23 +145,6 @@ class MyApp(ShowBase):
         # Set the background color to blue
         self.win.setClearColor((0.5, 0.8, 1, 1))
 
-    def put2D(self):
-        self.instructions = \
-            OnscreenText(text="Use WASD keys to move \
-                             \nUse mouse to look around\
-                             \nPress P to enable mouse outside window",
-                         parent=base.a2dTopLeft, align=TextNode.ALeft,
-                         pos=(0.05, -0.08), fg=(1, 1, 1, 1), scale=.06)
-        # Place compass on screen to navigate
-        self.compassCircle = OnscreenImage(image="images/compass.png", 
-                                           pos=(-1.05, 0, -0.74), scale=0.17)
-        self.compassCircle.setTransparency(TransparencyAttrib.MAlpha)
-        self.compassCircle.setAlphaScale(0.5)
-        self.compass = self.loader.loadModel("models/compass/pointer.egg")
-        self.compass.setScale(0.027)
-        self.compass.setPos(-2.8, 10, -2)
-        self.compass.reparentTo(self.camera)
-
     def initializeCollision(self):
         self.traverser = CollisionTraverser("main")
         base.cTrav = self.traverser # allows collision to be tested every frame
@@ -175,6 +158,23 @@ class MyApp(ShowBase):
         (self.length, self.width, self.height) = (self.terrain.dimensions)
         (self.maxZ, self.minZ) = self.terrain.maxZ, self.terrain.minZ
         self.scale = self.terrain.scale
+
+    def put2D(self):
+        self.instructions = \
+            OnscreenText(text="Use WASD keys to move \
+                             \nUse mouse to look around\
+                             \nPress P to enable mouse outside window",
+                         parent=base.a2dTopLeft, align=TextNode.ALeft,
+                         pos=(0.05, -0.08), fg=(1, 1, 1, 1), scale=.06)
+        # Place compass on screen to navigate
+        self.compass = self.loader.loadModel("models/compass/pointer.egg")
+        self.compass.setScale(0.027)
+        self.compass.setPos(-2.8, 10, -2)
+        self.compass.reparentTo(self.camera)
+        self.compassCircle = OnscreenImage(image="images/compass.png", 
+                                           pos=(-1.05, 0, -0.74), scale=0.17)
+        self.compassCircle.setTransparency(TransparencyAttrib.MAlpha)
+        self.compassCircle.setAlphaScale(0.5)
 
     def makeMouseRelative(self):
         props = WindowProperties() # initates window node

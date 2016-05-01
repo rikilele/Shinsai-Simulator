@@ -33,13 +33,13 @@ class Water(ShowBase):
         self.wave.setBin("ftb", 0) # draws tsunami after closer buildings
 
     def startSimulation(self, scene):
-        startPos = (0, scene.length*2, scene.minZ-scene.height)
+        startPos = (0, scene.length*1.5, scene.minZ-scene.height)
         self.wave.setPos(Point3(startPos))
         middlePos = (0, scene.length*1.5, 
             scene.minZ - scene.height*0.7 + scene.maxZ*(scene.magnitude)/100)
         endPos = (0, 0, 
             scene.minZ - scene.height*0.7 + scene.maxZ*(scene.magnitude)/100)
-        bringTsunami = self.wave.posInterval(10,
+        bringTsunami = self.wave.posInterval(15,
                                               Point3(middlePos),
                                               Point3(startPos))
         hitTsunami = self.wave.posInterval(100, 
